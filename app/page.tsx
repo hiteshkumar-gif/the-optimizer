@@ -1,18 +1,31 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ArrowRight,
   Github,
   Linkedin,
   Sparkles,
   Star,
-  Zap,
-  CheckCircle2,
 } from 'lucide-react';
+import { DemoLoginModal } from '@/components/DemoLoginModal';
+import { isDemoLoggedIn } from '@/lib/storage';
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
+  const handleStartClick = (e: React.MouseEvent) => {
+    if (!isDemoLoggedIn()) {
+      e.preventDefault();
+      setIsOnboardingOpen(true);
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
   return (
     <div className="w-full bg-[#080A0C] text-[#F5F3EE] overflow-hidden">
       {/* ========================================================================= */}
@@ -54,13 +67,13 @@ export default function LandingPage() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-16">
-          <Link
-            href="/dashboard"
+          <button
+            onClick={handleStartClick}
             className="w-full sm:w-auto py-4 px-8 rounded-xl bg-[#F5F3EE] hover:bg-[#B8F2D0] text-[#080A0C] font-bold text-sm tracking-wide uppercase font-mono shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 active:scale-95 group"
           >
             <span>Start the Challenge</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#080A0C]" />
-          </Link>
+          </button>
           <a
             href="#how-it-works"
             className="w-full sm:w-auto py-4 px-8 rounded-xl bg-[#101418] hover:bg-[#151A1F] border border-[#242A30] text-[#F5F3EE] font-mono text-sm font-semibold transition-all flex items-center justify-center gap-2"
@@ -336,12 +349,12 @@ export default function LandingPage() {
           </p>
 
           <div>
-            <Link
-              href="/dashboard"
+            <button
+              onClick={handleStartClick}
               className="inline-flex items-center gap-2 py-4 px-8 rounded-xl bg-[#F5F3EE] hover:bg-[#B8F2D0] text-[#080A0C] font-mono font-bold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
             >
               <span>Start My 60-Day Journey →</span>
-            </Link>
+            </button>
           </div>
         </div>
       </section>
@@ -377,6 +390,13 @@ export default function LandingPage() {
           </p>
         </div>
       </footer>
+
+      {/* Demo Onboarding Modal */}
+      <DemoLoginModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onLoginSuccess={() => router.push('/dashboard')}
+      />
     </div>
   );
 }

@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { getStoredDaySubmission, saveDaySubmission, saveStoredStudent, getStoredStudent } from '@/lib/storage';
 
 interface SubmissionFormProps {
+  dayId?: string | number;
   initialGithubUrl?: string;
   initialLinkedinUrl?: string;
   onSubmissionUpdate?: (status: {
@@ -17,20 +19,45 @@ interface SubmissionFormProps {
 }
 
 export const SubmissionForm: React.FC<SubmissionFormProps> = ({
-  initialGithubUrl = 'https://github.com/hiteshkumar/day12-portfolio',
-  initialLinkedinUrl = 'https://linkedin.com/posts/hiteshkumar-day12',
+  dayId = '12',
+  initialGithubUrl,
+  initialLinkedinUrl,
   onSubmissionUpdate,
 }) => {
-  const [githubUrl, setGithubUrl] = useState(initialGithubUrl);
-  const [linkedinUrl, setLinkedinUrl] = useState(initialLinkedinUrl);
+  const [githubUrl, setGithubUrl] = useState('');
+  const [linkedinUrl, setLinkedinUrl] = useState('');
 
-  const [githubVerified, setGithubVerified] = useState(true);
-  const [linkedinVerified, setLinkedinVerified] = useState(true);
+  const [githubVerified, setGithubVerified] = useState(false);
+  const [linkedinVerified, setLinkedinVerified] = useState(false);
 
   const [githubError, setGithubError] = useState<string | null>(null);
   const [linkedinError, setLinkedinError] = useState<string | null>(null);
 
   const [isCompleted, setIsCompleted] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<string>('Pending Review');
+
+  useEffect(() => {
+    const stored = getStoredDaySubmission(dayId);
+    const defaultGh = initialGithubUrl || 'https://github.com/hiteshkumar/day12-portfolio';
+    const defaultLi = initialLinkedinUrl || 'https://linkedin.com/posts/hiteshkumar-day12';
+
+    const gh = stored.githubUrl || defaultGh;
+    const li = stored.linkedinUrl || defaultLi;
+
+    setGithubUrl(gh);
+    setLinkedinUrl(li);
+
+    const isGhValid = gh.includes('github.com');
+    const isLiValid = li.includes('linkedin.com');
+
+    setGithubVerified(isGhValid);
+    setLinkedinVerified(isLiValid);
+
+    if (stored.status === 'completed' || (isGhValid && isLiValid && stored.githubSubmitted)) {
+      setIsCompleted(true);
+      setSubmissionStatus('Submitted — Saved to Streak Timeline');
+    }
+  }, [dayId, initialGithubUrl, initialLinkedinUrl]);
 
   const validateGithub = (url: string) => {
     if (!url || !url.trim()) {
@@ -45,6 +72,14 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     }
     setGithubError(null);
     setGithubVerified(true);
+
+    // Save to storage
+    saveDaySubmission(dayId, {
+      githubUrl: url,
+      githubSubmitted: true,
+      status: linkedinVerified ? 'completed' : 'pending_review',
+    });
+
     return true;
   };
 
@@ -61,6 +96,14 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     }
     setLinkedinError(null);
     setLinkedinVerified(true);
+
+    // Save to storage
+    saveDaySubmission(dayId, {
+      linkedinUrl: url,
+      linkedinSubmitted: true,
+      status: githubVerified ? 'completed' : 'pending_review',
+    });
+
     return true;
   };
 
@@ -78,6 +121,24 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
 
     if (isGhValid && isLiValid) {
       setIsCompleted(true);
+      setSubmissionStatus('Submitted — Saved to Streak Timeline');
+
+      saveDaySubmission(dayId, {
+        githubUrl,
+        linkedinUrl,
+        githubSubmitted: true,
+        linkedinSubmitted: true,
+        status: 'completed',
+      });
+
+      // Update student profile stats in localStorage
+      const currentStudent = getStoredStudent();
+      saveStoredStudent({
+        daysCompleted: Math.max(currentStudent.daysCompleted || 0, 12),
+        currentStreak: Math.max(currentStudent.currentStreak || 0, 12),
+        xp: (currentStudent.xp || 0) + 100,
+      });
+
       confetti({
         particleCount: 100,
         spread: 70,
@@ -124,7 +185,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               {githubVerified && (
                 <span className="text-[10px] uppercase font-mono font-bold text-[#B8F2D0] px-2 py-0.5 rounded bg-[#B8F2D0]/10 border border-[#B8F2D0]/20 flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
-                  Verified
+                  Submitted
                 </span>
               )}
             </div>
@@ -151,7 +212,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               onClick={handleVerifyGithub}
               className="w-full py-2 px-3 rounded-lg bg-[#101418] hover:bg-[#242A30] text-xs text-[#F5F3EE] font-mono font-semibold border border-[#242A30] transition-all flex items-center justify-center gap-1.5 active:scale-95"
             >
-              <span>Verify GitHub →</span>
+              <span>Save GitHub Link →</span>
             </button>
           </div>
 
@@ -165,7 +226,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               {linkedinVerified && (
                 <span className="text-[10px] uppercase font-mono font-bold text-[#B8F2D0] px-2 py-0.5 rounded bg-[#B8F2D0]/10 border border-[#B8F2D0]/20 flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
-                  Verified
+                  Submitted
                 </span>
               )}
             </div>
@@ -192,7 +253,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               onClick={handleVerifyLinkedin}
               className="w-full py-2 px-3 rounded-lg bg-[#101418] hover:bg-[#242A30] text-xs text-[#F5F3EE] font-mono font-semibold border border-[#242A30] transition-all flex items-center justify-center gap-1.5 active:scale-95"
             >
-              <span>Verify LinkedIn →</span>
+              <span>Save LinkedIn Link →</span>
             </button>
           </div>
         </div>
@@ -204,7 +265,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#B8F2D0] animate-pulse" />
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#B8F2D0]">
-              {isCompleted ? 'VERIFIED & COMPLETED' : 'PENDING REVIEW'}
+              {isCompleted ? 'SUBMITTED & SAVED' : 'PENDING REVIEW'}
             </span>
           </div>
           <span className="text-xs text-[#9BA3AA] font-mono font-medium">Status Ledger</span>
@@ -212,24 +273,24 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
 
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="p-3 rounded-xl bg-[#151A1F] border border-[#242A30] flex items-center justify-between text-xs font-mono">
-            <span className="text-[#9BA3AA]">GitHub</span>
+            <span className="text-[#9BA3AA]">GitHub Repository</span>
             <span className={githubVerified ? 'text-[#B8F2D0] font-bold' : 'text-[#9BA3AA]'}>
-              {githubVerified ? '✓ Verified' : 'Missing'}
+              {githubVerified ? '✓ Submitted' : 'Not Submitted'}
             </span>
           </div>
 
           <div className="p-3 rounded-xl bg-[#151A1F] border border-[#242A30] flex items-center justify-between text-xs font-mono">
-            <span className="text-[#9BA3AA]">LinkedIn</span>
+            <span className="text-[#9BA3AA]">LinkedIn Update</span>
             <span className={linkedinVerified ? 'text-[#B8F2D0] font-bold' : 'text-[#9BA3AA]'}>
-              {linkedinVerified ? '✓ Verified' : 'Missing'}
+              {linkedinVerified ? '✓ Submitted' : 'Not Submitted'}
             </span>
           </div>
         </div>
 
         <p className="text-xs text-[#9BA3AA] italic">
           {isCompleted
-            ? 'Your proof of work has been recorded to your developer streak timeline!'
-            : 'Your work is being checked. Complete both proof links to finish Day 12.'}
+            ? 'Your proof of work has been recorded to your local developer streak timeline!'
+            : 'Your submission is saved locally. Complete both proof links to finalize Day 12.'}
         </p>
       </div>
 
@@ -237,7 +298,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
       <div className="hardware-card p-6 text-center space-y-4">
         {!isCompleted ? (
           <>
-            <h4 className="text-xl font-bold text-[#F5F3EE] tracking-tight">Almost there.</h4>
+            <h4 className="text-xl font-bold text-[#F5F3EE] tracking-tight font-sans">Almost there.</h4>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#151A1F] border border-[#D8C7A1]/30 text-[#D8C7A1] text-xs font-mono">
               <span>{completedCount} / 2 submissions complete</span>
             </div>
@@ -252,7 +313,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
                     : 'bg-[#151A1F] text-[#9BA3AA] border border-[#242A30] cursor-not-allowed'
                 }`}
               >
-                <span>Complete Day 12 →</span>
+                <span>Submit Day 12 & Update Streak →</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -263,10 +324,10 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               ✓
             </div>
             <h4 className="text-2xl font-black text-[#B8F2D0] tracking-tight font-mono">
-              DAY 12 COMPLETED!
+              DAY 12 SUBMITTED!
             </h4>
             <p className="text-xs sm:text-sm text-[#9BA3AA] max-w-md mx-auto">
-              Outstanding work! You&apos;ve extended your streak to 12 days. Keep building consistency every single day.
+              Outstanding work! Your proof of work is saved to localStorage. Your streak is now 12 days active.
             </p>
           </div>
         )}

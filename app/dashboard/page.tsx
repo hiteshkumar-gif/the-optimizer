@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getMockData, getStudentData } from '@/lib/data';
 import { StreakCard } from '@/components/StreakCard';
 import { TaskCard } from '@/components/TaskCard';
@@ -9,30 +9,43 @@ import { AchievementSection } from '@/components/AchievementCard';
 import { LeaderboardCard } from '@/components/LeaderboardCard';
 import { ActivityChart } from '@/components/ActivityChart';
 import { StreakShieldModal } from '@/components/StreakShieldModal';
+import { DemoLoginModal } from '@/components/DemoLoginModal';
 import { EdgeCaseSwitcher, EdgeCaseMode } from '@/components/EdgeCaseSwitcher';
 import { AlertCircle, Sparkles } from 'lucide-react';
+import { isDemoLoggedIn } from '@/lib/storage';
 
 export default function DashboardPage() {
-  const mockData = getMockData();
   const [edgeMode, setEdgeMode] = useState<EdgeCaseMode>('normal');
   const [isShieldOpen, setIsShieldOpen] = useState(false);
   const [isShieldProtected, setIsShieldProtected] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Dynamic student data based on judge edge case selection
+  useEffect(() => {
+    if (!isDemoLoggedIn() && typeof window !== 'undefined') {
+      setIsOnboardingOpen(true);
+    }
+  }, []);
+
+  const mockData = getMockData();
   const student = getStudentData(edgeMode === 'normal' ? undefined : edgeMode);
   const todayTask = mockData.days['12'];
 
+  const handleLoginSuccess = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
+
   return (
-    <div className="w-full bg-[#080A0C] text-[#F5F3EE] min-h-screen pt-6 pb-24 sm:py-8 px-4 sm:px-6">
+    <div key={refreshKey} className="w-full bg-[#080A0C] text-[#F5F3EE] min-h-screen pt-6 pb-24 sm:py-8 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
         {/* DASHBOARD GREETING HEADER */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#242A30] pb-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#F5F3EE] flex items-center gap-2">
-              Good morning, {student.name.split(' ')[0]} 👋
+              Good morning, {student.name ? student.name.split(' ')[0] : 'Hitesh'} 👋
             </h1>
             <p className="text-xs sm:text-sm text-[#9BA3AA] font-normal mt-1">
-              Day {student.daysCompleted} of your 60-day developer trajectory
+              Day {student.daysCompleted ?? 12} of your 60-day developer trajectory
             </p>
           </div>
 
@@ -85,7 +98,7 @@ export default function DashboardPage() {
             />
 
             {/* TODAY'S TASK CARD */}
-            <TaskCard task={todayTask} />
+            <TaskCard task={todayTask} isCompleted={(student.daysCompleted ?? 0) >= 12} />
 
             {/* WEEKLY ACTIVITY CHART */}
             <ActivityChart week={mockData.streak.week} />
@@ -111,6 +124,13 @@ export default function DashboardPage() {
         onClose={() => setIsShieldOpen(false)}
         task={mockData.streakShieldTask}
         onShieldActivated={() => setIsShieldProtected(true)}
+      />
+
+      {/* DEMO ONBOARDING MODAL */}
+      <DemoLoginModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       {/* EDGE CASE JUDGE SWITCHER */}

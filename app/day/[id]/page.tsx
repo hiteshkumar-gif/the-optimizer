@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getDayTask, getSubmissionData } from '@/lib/data';
 import { SubmissionForm } from '@/components/SubmissionForm';
+import { DemoLoginModal } from '@/components/DemoLoginModal';
 import {
   ArrowLeft,
   Clock,
@@ -16,6 +17,7 @@ import {
   ExternalLink,
   Sparkles,
 } from 'lucide-react';
+import { isDemoLoggedIn } from '@/lib/storage';
 
 export default function DayWorkspacePage() {
   const params = useParams();
@@ -24,6 +26,13 @@ export default function DayWorkspacePage() {
   const initialSub = getSubmissionData(dayId);
 
   const [openAccordion, setOpenAccordion] = useState<string | null>('mission');
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isDemoLoggedIn() && typeof window !== 'undefined') {
+      setIsOnboardingOpen(true);
+    }
+  }, []);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -203,10 +212,18 @@ export default function DayWorkspacePage() {
 
         {/* SUBMISSION FORM */}
         <SubmissionForm
+          dayId={dayId}
           initialGithubUrl={initialSub.githubUrl}
           initialLinkedinUrl={initialSub.linkedinUrl}
         />
       </div>
+
+      {/* DEMO ONBOARDING MODAL */}
+      <DemoLoginModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onLoginSuccess={() => {}}
+      />
     </div>
   );
 }

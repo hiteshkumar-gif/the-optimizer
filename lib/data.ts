@@ -1,16 +1,32 @@
 import mockDataRaw from '@/data/mockData.json';
 import { MockData, Student, DayTask, SubmissionData } from './types';
+import { getStoredStudent, getStoredSubmissions, getStoredDaySubmission } from './storage';
 
 export const getMockData = (): MockData => {
-  return mockDataRaw as unknown as MockData;
+  const base = mockDataRaw as unknown as MockData;
+  if (typeof window !== 'undefined') {
+    const student = getStoredStudent();
+    const submissions = getStoredSubmissions();
+    return {
+      ...base,
+      student,
+      submissions,
+    };
+  }
+  return base;
 };
 
-export const getStudentData = (overrideState?: 'new' | 'missed' | 'empty'): Student => {
+export const getStudentData = (overrideState?: 'normal' | 'new' | 'missed' | 'empty'): Student => {
+  if (typeof window !== 'undefined' && (!overrideState || overrideState === 'normal')) {
+    return getStoredStudent();
+  }
+
   const base = mockDataRaw.student;
   
   if (overrideState === 'new') {
     return {
       ...base,
+      name: 'Hitesh Kumar',
       currentStreak: 0,
       bestStreak: 0,
       daysCompleted: 0,
@@ -25,6 +41,7 @@ export const getStudentData = (overrideState?: 'new' | 'missed' | 'empty'): Stud
   if (overrideState === 'missed') {
     return {
       ...base,
+      name: 'Hitesh Kumar',
       currentStreak: 0,
       bestStreak: 11,
       streakProtected: false,
@@ -91,6 +108,9 @@ export const getDayTask = (dayId: string | number): DayTask => {
 };
 
 export const getSubmissionData = (dayId: string | number): SubmissionData => {
+  if (typeof window !== 'undefined') {
+    return getStoredDaySubmission(dayId);
+  }
   const dayStr = String(dayId);
   const found = mockDataRaw.submissions[dayStr as keyof typeof mockDataRaw.submissions];
   if (found) {
