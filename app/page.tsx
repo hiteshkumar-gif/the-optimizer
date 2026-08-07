@@ -3,278 +3,275 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Flame,
   ArrowRight,
-  Code2,
   Github,
   Linkedin,
-  CheckCircle2,
-  Trophy,
   Sparkles,
-  Zap,
   Star,
-  Terminal,
-  Layers,
-  BarChart3,
+  Zap,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="w-full bg-zinc-950 text-white overflow-hidden">
+    <div className="w-full bg-[#080A0C] text-[#F5F3EE] overflow-hidden">
       {/* ========================================================================= */}
-      {/* 6. HERO SECTION */}
+      {/* HERO SECTION */}
       {/* ========================================================================= */}
-      <section className="relative pt-12 pb-20 sm:pt-20 sm:pb-28 px-4 sm:px-6 max-w-6xl mx-auto text-center">
-        {/* Glow backdrop */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500/15 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative pt-12 pb-20 sm:pt-24 sm:pb-28 px-4 sm:px-6 max-w-6xl mx-auto text-center">
+        {/* Subtle Atmospheric Background Radial Overlay */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#B8F2D0]/5 rounded-full blur-[140px] pointer-events-none" />
 
-        {/* Small Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-extrabold uppercase tracking-widest mb-6 shadow-glow">
-          <Flame className="w-4 h-4 fill-orange-500 text-orange-500 animate-pulse-flame" />
+        {/* Small Mint Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101418] border border-[#B8F2D0]/25 text-[#B8F2D0] text-xs font-mono font-bold uppercase tracking-widest mb-6 shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
           <span>60-DAY DEVELOPER CHALLENGE</span>
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white mb-6 max-w-4xl mx-auto leading-[1.08] font-sans">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-[#F5F3EE] mb-6 max-w-4xl mx-auto leading-[1.08] font-sans">
           Stop Planning.{' '}
-          <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent">
+          <span className="text-[#B8F2D0]">
             Start Shipping.
           </span>
         </h1>
 
-        {/* Supporting text */}
-        <p className="text-base sm:text-xl text-zinc-300 max-w-2xl mx-auto mb-6 font-normal leading-relaxed">
+        {/* Thin Champagne Divider */}
+        <div className="w-16 h-0.5 bg-[#D8C7A1]/30 mx-auto mb-6" />
+
+        {/* Supporting Text */}
+        <p className="text-base sm:text-lg text-[#9BA3AA] max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
           Build your developer streak one day at a time. Complete daily coding challenges, publish your proof of work to GitHub & LinkedIn, and become the developer recruiters hire.
         </p>
 
-        {/* 4 Core Pillars Badge Line */}
-        <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono text-zinc-400 max-w-xl mx-auto mb-8">
-          <span className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">⚡ 60 Days</span>
-          <span className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">💻 Daily Tasks</span>
-          <span className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">🐙 GitHub Commit</span>
-          <span className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">💼 LinkedIn Proof</span>
+        {/* 4 Core Pillars */}
+        <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono text-[#9BA3AA] max-w-xl mx-auto mb-10">
+          <span className="px-3 py-1 rounded-full bg-[#101418] border border-[#242A30] text-[#F5F3EE]">⚡ 60 Days</span>
+          <span className="px-3 py-1 rounded-full bg-[#101418] border border-[#242A30] text-[#F5F3EE]">💻 Daily Tasks</span>
+          <span className="px-3 py-1 rounded-full bg-[#101418] border border-[#242A30] text-[#F5F3EE]">🐙 GitHub Commit</span>
+          <span className="px-3 py-1 rounded-full bg-[#101418] border border-[#242A30] text-[#F5F3EE]">💼 LinkedIn Proof</span>
         </div>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-16">
           <Link
             href="/dashboard"
-            className="w-full sm:w-auto py-4 px-8 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-zinc-950 font-extrabold text-base shadow-xl shadow-orange-950/60 transition-all flex items-center justify-center gap-2 active:scale-95 group"
+            className="w-full sm:w-auto py-4 px-8 rounded-xl bg-[#F5F3EE] hover:bg-[#B8F2D0] text-[#080A0C] font-bold text-sm tracking-wide uppercase font-mono shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 active:scale-95 group"
           >
             <span>Start the Challenge</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#080A0C]" />
           </Link>
           <a
             href="#how-it-works"
-            className="w-full sm:w-auto py-4 px-8 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 font-bold text-base transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto py-4 px-8 rounded-xl bg-[#101418] hover:bg-[#151A1F] border border-[#242A30] text-[#F5F3EE] font-mono text-sm font-semibold transition-all flex items-center justify-center gap-2"
           >
-            See How It Works
+            Framework Details
           </a>
         </div>
 
-        {/* Visual representation: Day 1 → Day 12 → Day 30 → Day 60 */}
-        <div className="max-w-3xl mx-auto p-5 sm:p-6 rounded-2xl bg-zinc-900/90 border border-zinc-800 shadow-2xl backdrop-blur-xl">
-          <div className="flex items-center justify-between text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-4 px-2">
-            <span>STREAK EVOLUTION</span>
-            <span className="text-orange-400 font-mono">60 DAYS • PUBLIC PROOF</span>
+        {/* Signature Momentum Trajectory Visual: 01 → 12 → 30 → 60 */}
+        <div className="max-w-3xl mx-auto p-5 sm:p-6 hardware-card relative overflow-hidden">
+          <div className="flex items-center justify-between text-xs font-mono font-bold text-[#9BA3AA] uppercase tracking-wider mb-5 px-1">
+            <span>MOMENTUM TRAJECTORY</span>
+            <span className="text-[#B8F2D0]">60 DAYS • PUBLIC PROOF</span>
           </div>
 
-          <div className="grid grid-cols-4 gap-2 sm:gap-4">
-            <div className="p-3 sm:p-4 rounded-xl bg-zinc-950 border border-emerald-500/30 text-center">
-              <span className="text-xs uppercase font-extrabold text-emerald-400 block mb-1">Day 01</span>
-              <span className="text-lg sm:text-2xl font-black text-white block">START</span>
-              <span className="text-[10px] text-zinc-400 font-mono">Commit ✓</span>
+          <div className="grid grid-cols-4 gap-2 sm:gap-4 relative z-10">
+            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center">
+              <span className="text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-1">Day 01</span>
+              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">START</span>
+              <span className="text-[10px] text-[#B8F2D0] font-mono">Commit ✓</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-orange-500/20 border border-orange-500/60 text-center shadow-lg shadow-orange-950/40 ring-1 ring-orange-500/50">
-              <span className="text-xs uppercase font-extrabold text-orange-400 block mb-1">Day 12</span>
-              <span className="text-lg sm:text-2xl font-black text-white block">MOMENTUM</span>
-              <span className="text-[10px] text-orange-300 font-mono font-bold">Streak 🔥</span>
+            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#B8F2D0]/50 text-center shadow-sm">
+              <span className="text-[11px] uppercase font-mono font-bold text-[#B8F2D0] block mb-1">Day 12</span>
+              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">ACTIVE</span>
+              <span className="text-[10px] text-[#B8F2D0] font-mono font-bold">12d Streak ⚡</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-zinc-950 border border-amber-500/30 text-center opacity-80">
-              <span className="text-xs uppercase font-extrabold text-amber-400 block mb-1">Day 30</span>
-              <span className="text-lg sm:text-2xl font-black text-white block">HALFWAY</span>
-              <span className="text-[10px] text-zinc-400 font-mono">Milestone 🚀</span>
+            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#D8C7A1]/30 text-center">
+              <span className="text-[11px] uppercase font-mono font-bold text-[#D8C7A1] block mb-1">Day 30</span>
+              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">HALFWAY</span>
+              <span className="text-[10px] text-[#D8C7A1] font-mono">Milestone 🚀</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-zinc-950 border border-cyan-500/30 text-center opacity-60">
-              <span className="text-xs uppercase font-extrabold text-cyan-400 block mb-1">Day 60</span>
-              <span className="text-lg sm:text-2xl font-black text-white block">FINISH</span>
-              <span className="text-[10px] text-zinc-400 font-mono">Trophy 🏆</span>
+            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center opacity-70">
+              <span className="text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-1">Day 60</span>
+              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">FINISH</span>
+              <span className="text-[10px] text-[#9BA3AA] font-mono">Mastery 🏆</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. TRUST / SOCIAL PROOF */}
+      {/* TRUST / SOCIAL PROOF STATS */}
       {/* ========================================================================= */}
-      <section className="py-16 px-4 sm:px-6 bg-zinc-900/50 border-y border-zinc-800/80">
+      <section className="py-16 px-4 sm:px-6 bg-[#101418]/60 border-y border-[#242A30]">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-orange-400 mb-1 font-sans">10K+</div>
-              <div className="text-xs uppercase font-extrabold text-zinc-400 tracking-wider">Students</div>
+            <div className="hardware-card p-5 text-center">
+              <div className="text-3xl sm:text-4xl font-black text-[#F5F3EE] mb-1 font-sans">10K+</div>
+              <div className="text-xs uppercase font-mono font-bold text-[#9BA3AA] tracking-wider">Students</div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-amber-400 mb-1 font-sans">60</div>
-              <div className="text-xs uppercase font-extrabold text-zinc-400 tracking-wider">Days</div>
+            <div className="hardware-card p-5 text-center">
+              <div className="text-3xl sm:text-4xl font-black text-[#B8F2D0] mb-1 font-sans">60</div>
+              <div className="text-xs uppercase font-mono font-bold text-[#9BA3AA] tracking-wider">Days</div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-emerald-400 mb-1 font-sans">1M+</div>
-              <div className="text-xs uppercase font-extrabold text-zinc-400 tracking-wider">Lines of Code</div>
+            <div className="hardware-card p-5 text-center">
+              <div className="text-3xl sm:text-4xl font-black text-[#D8C7A1] mb-1 font-sans">1M+</div>
+              <div className="text-xs uppercase font-mono font-bold text-[#9BA3AA] tracking-wider">Lines of Code</div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-cyan-400 mb-1 font-sans">95%</div>
-              <div className="text-xs uppercase font-extrabold text-zinc-400 tracking-wider">Completion Motivation</div>
+            <div className="hardware-card p-5 text-center">
+              <div className="text-3xl sm:text-4xl font-black text-[#F5F3EE] mb-1 font-sans">95%</div>
+              <div className="text-xs uppercase font-mono font-bold text-[#9BA3AA] tracking-wider">Consistency</div>
             </div>
           </div>
 
-          {/* Testimonial Quote */}
-          <div className="max-w-2xl mx-auto p-6 sm:p-8 rounded-2xl bg-zinc-900 border border-zinc-800 text-center relative">
-            <div className="flex justify-center gap-1 text-amber-400 mb-4">
+          {/* Editorial Testimonial Quote */}
+          <div className="max-w-2xl mx-auto hardware-card p-6 sm:p-8 text-center relative">
+            <div className="flex justify-center gap-1 text-[#D8C7A1] mb-4">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400" />
+                <Star key={i} className="w-4 h-4 fill-[#D8C7A1]" />
               ))}
             </div>
-            <blockquote className="text-lg sm:text-xl text-zinc-200 font-medium italic mb-4 leading-relaxed">
+            <blockquote className="text-base sm:text-lg text-[#F5F3EE] font-normal italic mb-4 leading-relaxed">
               &ldquo;The hardest part wasn&apos;t coding. It was showing up every day. ABTalks turned my sporadic effort into a non-negotiable daily streak.&rdquo;
             </blockquote>
-            <div className="text-xs font-bold text-orange-400">Rohan Mehta — Tier-1 Engineering Student</div>
+            <div className="text-xs font-mono font-bold text-[#B8F2D0]">Rohan Mehta — Tier-1 Engineering Student</div>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. HOW IT WORKS */}
+      {/* HOW IT WORKS */}
       {/* ========================================================================= */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-orange-400 px-3 py-1 rounded bg-orange-500/10 border border-orange-500/20">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#B8F2D0] px-3 py-1 rounded bg-[#101418] border border-[#B8F2D0]/20">
             SIMPLE 3-STEP PROCESS
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mt-4">
+          <h2 className="text-3xl sm:text-5xl font-black text-[#F5F3EE] tracking-tight mt-4">
             How ABTalks Works
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
           {/* Step 1 */}
-          <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 relative hover:border-orange-500/40 transition-colors group">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center text-xl font-black mb-6">
+          <div className="hardware-card p-6 relative hover:border-[#B8F2D0]/40 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-[#151A1F] border border-[#242A30] text-[#B8F2D0] flex items-center justify-center text-sm font-mono font-bold mb-6">
               01
             </div>
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+            <h3 className="text-lg font-bold text-[#F5F3EE] mb-2 group-hover:text-[#B8F2D0] transition-colors">
               Pick Your Challenge
             </h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
+            <p className="text-xs text-[#9BA3AA] leading-relaxed">
               Choose your targeted learning track from Fullstack Web, Mobile App Dev, or Data Structures & Algorithms.
             </p>
           </div>
 
           {/* Step 2 */}
-          <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 relative hover:border-orange-500/40 transition-colors group">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-xl font-black mb-6">
+          <div className="hardware-card p-6 relative hover:border-[#D8C7A1]/40 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-[#151A1F] border border-[#242A30] text-[#D8C7A1] flex items-center justify-center text-sm font-mono font-bold mb-6">
               02
             </div>
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+            <h3 className="text-lg font-bold text-[#F5F3EE] mb-2 group-hover:text-[#D8C7A1] transition-colors">
               Ship Every Day
             </h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
+            <p className="text-xs text-[#9BA3AA] leading-relaxed">
               Complete your structured daily coding task in 30 to 45 minutes with clear specifications and resources.
             </p>
           </div>
 
           {/* Step 3 */}
-          <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 relative hover:border-orange-500/40 transition-colors group">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl font-black mb-6">
+          <div className="hardware-card p-6 relative hover:border-[#B8F2D0]/40 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-[#151A1F] border border-[#242A30] text-[#B8F2D0] flex items-center justify-center text-sm font-mono font-bold mb-6">
               03
             </div>
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+            <h3 className="text-lg font-bold text-[#F5F3EE] mb-2 group-hover:text-[#B8F2D0] transition-colors">
               Prove Your Progress
             </h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Submit your GitHub repository commit + LinkedIn update to keep your fire streak alive and unlock badges.
+            <p className="text-xs text-[#9BA3AA] leading-relaxed">
+              Submit your GitHub repository commit + LinkedIn update to keep your streak momentum alive and unlock badges.
             </p>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 9. 60 DAY JOURNEY TIMELINE */}
+      {/* 60 DAY JOURNEY TIMELINE */}
       {/* ========================================================================= */}
-      <section id="journey" className="py-20 px-4 sm:px-6 bg-zinc-900/40 border-y border-zinc-800/80">
+      <section id="journey" className="py-20 px-4 sm:px-6 bg-[#101418]/40 border-y border-[#242A30]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-amber-400 px-3 py-1 rounded bg-amber-500/10 border border-amber-500/20">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D8C7A1] px-3 py-1 rounded bg-[#101418] border border-[#D8C7A1]/20">
               MILESTONE ROADMAP
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mt-4">
+            <h2 className="text-3xl sm:text-5xl font-black text-[#F5F3EE] tracking-tight mt-4">
               The 60-Day Transformation
             </h2>
-            <p className="text-sm text-zinc-400 mt-2">
+            <p className="text-xs text-[#9BA3AA] mt-2">
               Consistency becomes effortless as your streak momentum grows.
             </p>
           </div>
 
           {/* Timeline Nodes */}
-          <div className="space-y-6 relative before:absolute before:inset-0 before:left-6 sm:before:left-1/2 before:w-0.5 before:bg-zinc-800">
+          <div className="space-y-6 relative before:absolute before:inset-0 before:left-6 sm:before:left-1/2 before:w-0.5 before:bg-[#242A30]">
             {/* Node 1 */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 text-left sm:text-right">
-                <span className="text-xs font-extrabold text-orange-400 font-mono uppercase">DAY 01</span>
-                <h4 className="text-lg font-bold text-white">START YOUR JOURNEY</h4>
-                <p className="text-xs text-zinc-400">Set up your local environment & ship your first commit.</p>
+                <span className="text-xs font-mono font-bold text-[#B8F2D0] uppercase">DAY 01</span>
+                <h4 className="text-base font-bold text-[#F5F3EE]">START YOUR JOURNEY</h4>
+                <p className="text-xs text-[#9BA3AA]">Set up your local environment & ship your first commit.</p>
               </div>
-              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-zinc-950 flex items-center justify-center text-zinc-950 text-xs font-black" />
+              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-5 h-5 rounded-full bg-[#B8F2D0] border-4 border-[#080A0C]" />
               <div className="sm:w-1/2 sm:pl-8 hidden sm:block" />
             </div>
 
             {/* Node 12 */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 hidden sm:block" />
-              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-6 h-6 rounded-full bg-orange-500 border-4 border-zinc-950 flex items-center justify-center text-zinc-950 text-xs font-black animate-pulse" />
+              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-5 h-5 rounded-full bg-[#B8F2D0] border-4 border-[#080A0C] animate-pulse" />
               <div className="sm:w-1/2 sm:pl-8 text-left">
-                <span className="text-xs font-extrabold text-orange-400 font-mono uppercase">DAY 12 (YOU ARE HERE)</span>
-                <h4 className="text-lg font-bold text-white">BUILD MOMENTUM</h4>
-                <p className="text-xs text-zinc-400">Coding daily is now becoming a permanent muscle memory.</p>
+                <span className="text-xs font-mono font-bold text-[#B8F2D0] uppercase">DAY 12 (YOU ARE HERE)</span>
+                <h4 className="text-base font-bold text-[#F5F3EE]">BUILD MOMENTUM</h4>
+                <p className="text-xs text-[#9BA3AA]">Coding daily is now becoming a permanent muscle memory.</p>
               </div>
             </div>
 
             {/* Node 30 */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 text-left sm:text-right">
-                <span className="text-xs font-extrabold text-amber-400 font-mono uppercase">DAY 30 (HALFWAY)</span>
-                <h4 className="text-lg font-bold text-white">HALFWAY MILESTONE 🚀</h4>
-                <p className="text-xs text-zinc-400">30 complete projects shipped to GitHub. Halfway to mastery!</p>
+                <span className="text-xs font-mono font-bold text-[#D8C7A1] uppercase">DAY 30 (HALFWAY)</span>
+                <h4 className="text-base font-bold text-[#F5F3EE]">HALFWAY MILESTONE 🚀</h4>
+                <p className="text-xs text-[#9BA3AA]">30 complete projects shipped to GitHub. Halfway to mastery!</p>
               </div>
-              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full bg-amber-400 border-4 border-zinc-950 flex items-center justify-center text-zinc-950 text-xs font-black shadow-glow" />
+              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-6 h-6 rounded-full bg-[#D8C7A1] border-4 border-[#080A0C]" />
               <div className="sm:w-1/2 sm:pl-8 hidden sm:block" />
             </div>
 
             {/* Node 45 */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 hidden sm:block" />
-              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-6 h-6 rounded-full bg-cyan-400 border-4 border-zinc-950 flex items-center justify-center text-zinc-950 text-xs font-black" />
+              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-5 h-5 rounded-full bg-[#B8F2D0] border-4 border-[#080A0C]" />
               <div className="sm:w-1/2 sm:pl-8 text-left">
-                <span className="text-xs font-extrabold text-cyan-400 font-mono uppercase">DAY 45</span>
-                <h4 className="text-lg font-bold text-white">UNSTOPPABLE STREAK</h4>
-                <p className="text-xs text-zinc-400">Advanced fullstack architectures & production APIs.</p>
+                <span className="text-xs font-mono font-bold text-[#B8F2D0] uppercase">DAY 45</span>
+                <h4 className="text-base font-bold text-[#F5F3EE]">UNSTOPPABLE STREAK</h4>
+                <p className="text-xs text-[#9BA3AA]">Advanced fullstack architectures & production APIs.</p>
               </div>
             </div>
 
             {/* Node 60 */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 text-left sm:text-right">
-                <span className="text-xs font-extrabold text-emerald-400 font-mono uppercase">DAY 60</span>
-                <h4 className="text-lg font-bold text-white">FINISH STRONG 🏆</h4>
-                <p className="text-xs text-zinc-400">Graduate as a top 5% verified consistent developer.</p>
+                <span className="text-xs font-mono font-bold text-[#D8C7A1] uppercase">DAY 60</span>
+                <h4 className="text-base font-bold text-[#F5F3EE]">FINISH STRONG 🏆</h4>
+                <p className="text-xs text-[#9BA3AA]">Graduate as a top 5% verified consistent developer.</p>
               </div>
-              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full bg-emerald-400 border-4 border-zinc-950 flex items-center justify-center text-zinc-950 text-xs font-black shadow-glow-emerald" />
+              <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-6 h-6 rounded-full bg-[#D8C7A1] border-4 border-[#080A0C]" />
               <div className="sm:w-1/2 sm:pl-8 hidden sm:block" />
             </div>
           </div>
@@ -282,24 +279,24 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 10. MOTIVATION SECTION — MOCK GITHUB GRID */}
+      {/* PROOF OF WORK — HEATMAP */}
       {/* ========================================================================= */}
       <section id="proof" className="py-20 px-4 sm:px-6 max-w-5xl mx-auto text-center">
-        <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/20">
+        <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#B8F2D0] px-3 py-1 rounded bg-[#101418] border border-[#B8F2D0]/20">
           PROOF OF WORK
         </span>
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mt-4 mb-4">
+        <h2 className="text-3xl sm:text-5xl font-black text-[#F5F3EE] tracking-tight mt-4 mb-4">
           Your future GitHub profile starts today.
         </h2>
-        <p className="text-sm text-zinc-400 max-w-xl mx-auto mb-10">
-          Transform empty grid blocks into a dense green wall of daily commits that recruiters love.
+        <p className="text-xs text-[#9BA3AA] max-w-xl mx-auto mb-10">
+          Transform empty grid blocks into a dense wall of daily commits that recruiters love.
         </p>
 
         {/* Heat Map Grid */}
-        <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-2xl">
-          <div className="flex items-center justify-between text-xs text-zinc-400 mb-3 font-mono">
+        <div className="hardware-card p-6">
+          <div className="flex items-center justify-between text-xs text-[#9BA3AA] mb-4 font-mono">
             <span>60 Days Activity Graph</span>
-            <span className="text-emerald-400 font-bold">120 Total Commits</span>
+            <span className="text-[#B8F2D0] font-bold">120 Total Commits</span>
           </div>
 
           <div className="grid grid-cols-12 gap-1.5 sm:gap-2">
@@ -309,12 +306,12 @@ export default function LandingPage() {
               return (
                 <div
                   key={i}
-                  className={`h-6 sm:h-8 rounded transition-all flex items-center justify-center text-[10px] font-bold ${
+                  className={`h-6 sm:h-8 rounded transition-all flex items-center justify-center text-[10px] font-mono font-bold ${
                     isToday
-                      ? 'bg-orange-500 text-zinc-950 shadow-glow animate-pulse'
+                      ? 'bg-[#B8F2D0] text-[#080A0C] animate-pulse'
                       : isCompleted
-                      ? 'bg-emerald-500 text-zinc-950'
-                      : 'bg-zinc-950 border border-zinc-800 text-zinc-700'
+                      ? 'bg-[#B8F2D0]/80 text-[#080A0C]'
+                      : 'bg-[#151A1F] border border-[#242A30] text-[#9BA3AA]/40'
                   }`}
                   title={`Day ${i + 1}`}
                 >
@@ -327,21 +324,21 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 11. FINAL CTA & FOOTER */}
+      {/* FINAL CTA & FOOTER */}
       {/* ========================================================================= */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-zinc-900 to-zinc-950 border-t border-zinc-800/80 text-center">
+      <section className="py-20 px-4 sm:px-6 bg-[#101418] border-t border-[#242A30] text-center">
         <div className="max-w-3xl mx-auto space-y-6">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-[#F5F3EE] tracking-tight leading-tight">
             60 days from now, you&apos;ll wish you started today.
           </h2>
-          <p className="text-sm sm:text-base text-zinc-300">
+          <p className="text-xs sm:text-sm text-[#9BA3AA]">
             Join thousands of college developers building consistency, shipping daily projects, and standing out.
           </p>
 
           <div>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 py-4 px-8 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-600 text-zinc-950 font-extrabold text-base shadow-2xl shadow-orange-950/60 transition-all active:scale-95"
+              className="inline-flex items-center gap-2 py-4 px-8 rounded-xl bg-[#F5F3EE] hover:bg-[#B8F2D0] text-[#080A0C] font-mono font-bold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
             >
               <span>Start My 60-Day Journey →</span>
             </Link>
@@ -350,33 +347,33 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-10 px-4 sm:px-6 border-t border-zinc-800/80 text-xs text-zinc-400 bg-zinc-950">
+      <footer className="py-10 px-4 sm:px-6 border-t border-[#242A30] text-xs text-[#9BA3AA] bg-[#080A0C]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center text-zinc-950 font-black">
-              <Flame className="w-4 h-4 text-zinc-950 fill-zinc-950" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-md bg-[#151A1F] border border-[#242A30] flex items-center justify-center text-[#B8F2D0]">
+              <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
             </div>
-            <span className="font-bold text-white">ABTalks</span>
-            <span className="text-zinc-500">— 60-Day Coding Challenge</span>
+            <span className="font-bold text-[#F5F3EE]">ABTalks</span>
+            <span className="text-[#9BA3AA]">— 60-Day Coding Challenge</span>
           </div>
 
-          <div className="flex items-center gap-6 font-medium">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/day/12" className="hover:text-white transition-colors">Challenge</Link>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
+          <div className="flex items-center gap-6 font-mono text-xs">
+            <Link href="/" className="hover:text-[#F5F3EE] transition-colors">Home</Link>
+            <Link href="/dashboard" className="hover:text-[#F5F3EE] transition-colors">Dashboard</Link>
+            <Link href="/day/12" className="hover:text-[#F5F3EE] transition-colors">Workspace</Link>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-[#F5F3EE] transition-colors flex items-center gap-1">
               <Github className="w-3.5 h-3.5" /> GitHub
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-[#F5F3EE] transition-colors flex items-center gap-1">
               <Linkedin className="w-3.5 h-3.5" /> LinkedIn
             </a>
           </div>
         </div>
 
         {/* Absolute bottom subtle credit */}
-        <div className="mt-8 pt-6 border-t border-zinc-900 text-center">
-          <p className="text-[11px] font-medium tracking-wide text-zinc-500">
-            Voted by <span className="text-orange-400/90 font-semibold">Hitesh Kumar</span>
+        <div className="mt-8 pt-6 border-t border-[#242A30] text-center">
+          <p className="text-[11px] font-medium tracking-wide text-[#9BA3AA]">
+            Voted by <span className="text-[#D8C7A1] font-semibold">Hitesh Kumar</span>
           </p>
         </div>
       </footer>

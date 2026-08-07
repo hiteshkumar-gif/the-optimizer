@@ -8,30 +8,50 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        ink: {
+          bg: '#080A0C',
+          surface: '#101418',
+          elevated: '#151A1F',
+          border: '#242A30',
+        },
+        ivory: {
+          DEFAULT: '#F5F3EE',
+          muted: '#9BA3AA',
+          dim: '#677078',
+        },
+        mint: {
+          DEFAULT: '#B8F2D0',
+          glow: 'rgba(184, 242, 208, 0.15)',
+          border: 'rgba(184, 242, 208, 0.25)',
+        },
+        champagne: {
+          DEFAULT: '#D8C7A1',
+          pearl: '#F1E9D2',
+          border: 'rgba(216, 199, 161, 0.25)',
+        },
         brand: {
-          dark: '#07090E',
-          surface: '#0F121C',
-          card: '#161B28',
-          border: 'rgba(255, 255, 255, 0.08)',
-          orange: '#FF5E00',
-          amber: '#FF9900',
-          yellow: '#FFC700',
-          emerald: '#10B981',
-          cyan: '#06B6D4',
-          subtext: '#94A3B8'
+          dark: '#080A0C',
+          surface: '#101418',
+          card: '#151A1F',
+          border: '#242A30',
+          mint: '#B8F2D0',
+          champagne: '#D8C7A1',
+          subtext: '#9BA3AA',
         }
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 25px -5px rgba(255, 94, 0, 0.3)',
-        'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.3)',
+        glow: '0 0 25px -5px rgba(184, 242, 208, 0.18)',
+        'glow-mint': '0 0 25px -5px rgba(184, 242, 208, 0.22)',
+        'glow-champagne': '0 0 25px -5px rgba(216, 199, 161, 0.18)',
+        hardware: '0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
       },
       keyframes: {
-        pulseFlame: {
+        pulseMint: {
           '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(1.08)', opacity: '0.85' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.85' },
         },
         floatSlow: {
           '0%, 100%': { transform: 'translateY(0px)' },
@@ -39,7 +59,7 @@ module.exports = {
         }
       },
       animation: {
-        'pulse-flame': 'pulseFlame 2s ease-in-out infinite',
+        'pulse-mint': 'pulseMint 2s ease-in-out infinite',
         'float-slow': 'floatSlow 4s ease-in-out infinite',
       }
     },

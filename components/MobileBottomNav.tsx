@@ -3,53 +3,45 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Flame, Target, User } from 'lucide-react';
+import { Home, LayoutDashboard, Code2, Sparkles } from 'lucide-react';
 
 export const MobileBottomNav: React.FC = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { label: 'Home', href: '/', icon: Home },
-    { label: 'Dashboard', href: '/dashboard', icon: Flame },
-    { label: 'Challenge', href: '/day/12', icon: Target },
-    { label: 'Profile', href: '/dashboard#profile', icon: User },
+    { name: 'Home', path: '/', icon: Home },
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { name: 'Day 12', path: '/day/12', icon: Code2 },
   ];
 
-  if (pathname === '/') return null;
-
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-2xl border-t border-zinc-800/80 px-2 py-1.5 pb-safe">
-      <div className="flex items-center justify-around max-w-md mx-auto">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#080A0C]/95 backdrop-blur-xl border-t border-[#242A30] px-4 py-2">
+      <div className="max-w-md mx-auto flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            item.href === '/'
-              ? pathname === '/'
-              : item.href.startsWith('/dashboard')
-              ? pathname.startsWith('/dashboard')
-              : pathname.startsWith('/day');
+          const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
 
           return (
             <Link
-              key={item.label}
-              href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all relative ${
+              key={item.path}
+              href={item.path}
+              className={`flex flex-col items-center gap-1 py-1.5 px-4 rounded-xl transition-all ${
                 isActive
-                  ? 'text-orange-400 font-semibold'
-                  : 'text-zinc-500 hover:text-zinc-300'
+                  ? 'text-[#F5F3EE] bg-[#151A1F] font-semibold border border-[#242A30]'
+                  : 'text-[#9BA3AA] hover:text-[#F5F3EE]'
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110 text-orange-500' : ''}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`} />
                 {isActive && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-orange-500 rounded-full shadow-glow" />
+                  <span className="absolute -top-1 -right-1.5 w-1.5 h-1.5 rounded-full bg-[#B8F2D0] animate-pulse" />
                 )}
               </div>
-              <span className="text-[10px] mt-1 tracking-tight">{item.label}</span>
+              <span className="text-[10px] tracking-wide font-medium">{item.name}</span>
             </Link>
           );
         })}
       </div>
-    </nav>
+    </div>
   );
 };

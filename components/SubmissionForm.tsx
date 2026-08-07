@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Github, Linkedin, CheckCircle2, AlertCircle, ArrowRight, Sparkles, RefreshCw } from 'lucide-react';
+import { Github, Linkedin, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface SubmissionFormProps {
@@ -79,10 +79,10 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     if (isGhValid && isLiValid) {
       setIsCompleted(true);
       confetti({
-        particleCount: 120,
-        spread: 80,
+        particleCount: 100,
+        spread: 70,
         origin: { y: 0.6 },
-        colors: ['#FF5E00', '#FF9900', '#10B981', '#3B82F6', '#EC4899']
+        colors: ['#B8F2D0', '#D8C7A1', '#F5F3EE']
       });
 
       if (onSubmissionUpdate) {
@@ -102,27 +102,27 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
   return (
     <div className="space-y-6">
       {/* Proof Submission Dual Cards Header */}
-      <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 shadow-xl">
+      <div className="hardware-card p-5 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-orange-400" />
+          <h3 className="text-base sm:text-lg font-bold text-[#F5F3EE] tracking-tight flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[#B8F2D0]" />
             Submit Your Proof
           </h3>
-          <span className="text-xs text-zinc-400 font-mono">
+          <span className="text-xs text-[#D8C7A1] font-mono">
             Required: GitHub + LinkedIn
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* GitHub Submission Input Card */}
-          <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3">
+          <div className="p-4 rounded-xl bg-[#151A1F] border border-[#242A30] space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Github className="w-4 h-4 text-white" />
+              <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#F5F3EE] flex items-center gap-2">
+                <Github className="w-4 h-4 text-[#F5F3EE]" />
                 GitHub Repository
               </label>
               {githubVerified && (
-                <span className="text-[10px] uppercase font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-[#B8F2D0] px-2 py-0.5 rounded bg-[#B8F2D0]/10 border border-[#B8F2D0]/20 flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
                   Verified
                 </span>
@@ -137,11 +137,11 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
                 setGithubError(null);
               }}
               placeholder="https://github.com/username/project"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-700/80 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-mono transition-all"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-[#080A0C] border border-[#242A30] text-xs text-[#F5F3EE] placeholder-[#9BA3AA]/50 focus:outline-none focus:border-[#B8F2D0] font-mono transition-all"
             />
 
             {githubError && (
-              <p className="text-[11px] text-red-400 flex items-center gap-1">
+              <p className="text-[11px] text-red-400 flex items-center gap-1 font-mono">
                 <AlertCircle className="w-3.5 h-3.5" />
                 {githubError}
               </p>
@@ -149,21 +149,21 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
 
             <button
               onClick={handleVerifyGithub}
-              className="w-full py-2 px-3 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-200 font-semibold border border-zinc-700 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+              className="w-full py-2 px-3 rounded-lg bg-[#101418] hover:bg-[#242A30] text-xs text-[#F5F3EE] font-mono font-semibold border border-[#242A30] transition-all flex items-center justify-center gap-1.5 active:scale-95"
             >
               <span>Verify GitHub →</span>
             </button>
           </div>
 
           {/* LinkedIn Submission Input Card */}
-          <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3">
+          <div className="p-4 rounded-xl bg-[#151A1F] border border-[#242A30] space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                <Linkedin className="w-4 h-4 text-blue-400" />
+              <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#F5F3EE] flex items-center gap-2">
+                <Linkedin className="w-4 h-4 text-[#B8F2D0]" />
                 LinkedIn Post
               </label>
               {linkedinVerified && (
-                <span className="text-[10px] uppercase font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-1">
+                <span className="text-[10px] uppercase font-mono font-bold text-[#B8F2D0] px-2 py-0.5 rounded bg-[#B8F2D0]/10 border border-[#B8F2D0]/20 flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
                   Verified
                 </span>
@@ -178,11 +178,11 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
                 setLinkedinError(null);
               }}
               placeholder="https://linkedin.com/posts/..."
-              className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-700/80 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 font-mono transition-all"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-[#080A0C] border border-[#242A30] text-xs text-[#F5F3EE] placeholder-[#9BA3AA]/50 focus:outline-none focus:border-[#B8F2D0] font-mono transition-all"
             />
 
             {linkedinError && (
-              <p className="text-[11px] text-red-400 flex items-center gap-1">
+              <p className="text-[11px] text-red-400 flex items-center gap-1 font-mono">
                 <AlertCircle className="w-3.5 h-3.5" />
                 {linkedinError}
               </p>
@@ -190,7 +190,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
 
             <button
               onClick={handleVerifyLinkedin}
-              className="w-full py-2 px-3 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-200 font-semibold border border-zinc-700 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+              className="w-full py-2 px-3 rounded-lg bg-[#101418] hover:bg-[#242A30] text-xs text-[#F5F3EE] font-mono font-semibold border border-[#242A30] transition-all flex items-center justify-center gap-1.5 active:scale-95"
             >
               <span>Verify LinkedIn →</span>
             </button>
@@ -199,34 +199,34 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
       </div>
 
       {/* Submission Status Card */}
-      <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 shadow-xl">
+      <div className="hardware-card p-5 sm:p-6">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-wider text-amber-400">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#B8F2D0] animate-pulse" />
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#B8F2D0]">
               {isCompleted ? 'VERIFIED & COMPLETED' : 'PENDING REVIEW'}
             </span>
           </div>
-          <span className="text-xs text-zinc-400 font-mono font-medium">Status Check</span>
+          <span className="text-xs text-[#9BA3AA] font-mono font-medium">Status Ledger</span>
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-3">
-          <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 flex items-center justify-between text-xs">
-            <span className="text-zinc-400">GitHub</span>
-            <span className={githubVerified ? 'text-emerald-400 font-bold' : 'text-zinc-500'}>
-              {githubVerified ? '✓ Submitted' : 'Missing'}
+          <div className="p-3 rounded-xl bg-[#151A1F] border border-[#242A30] flex items-center justify-between text-xs font-mono">
+            <span className="text-[#9BA3AA]">GitHub</span>
+            <span className={githubVerified ? 'text-[#B8F2D0] font-bold' : 'text-[#9BA3AA]'}>
+              {githubVerified ? '✓ Verified' : 'Missing'}
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 flex items-center justify-between text-xs">
-            <span className="text-zinc-400">LinkedIn</span>
-            <span className={linkedinVerified ? 'text-emerald-400 font-bold' : 'text-zinc-500'}>
-              {linkedinVerified ? '✓ Submitted' : 'Missing'}
+          <div className="p-3 rounded-xl bg-[#151A1F] border border-[#242A30] flex items-center justify-between text-xs font-mono">
+            <span className="text-[#9BA3AA]">LinkedIn</span>
+            <span className={linkedinVerified ? 'text-[#B8F2D0] font-bold' : 'text-[#9BA3AA]'}>
+              {linkedinVerified ? '✓ Verified' : 'Missing'}
             </span>
           </div>
         </div>
 
-        <p className="text-xs text-zinc-400 italic">
+        <p className="text-xs text-[#9BA3AA] italic">
           {isCompleted
             ? 'Your proof of work has been recorded to your developer streak timeline!'
             : 'Your work is being checked. Complete both proof links to finish Day 12.'}
@@ -234,11 +234,11 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
       </div>
 
       {/* Day Completion Final Card */}
-      <div className="rounded-2xl bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 border border-orange-500/40 p-6 shadow-2xl text-center space-y-4">
+      <div className="hardware-card p-6 text-center space-y-4">
         {!isCompleted ? (
           <>
-            <h4 className="text-xl font-bold text-white tracking-tight">Almost there.</h4>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold">
+            <h4 className="text-xl font-bold text-[#F5F3EE] tracking-tight">Almost there.</h4>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#151A1F] border border-[#D8C7A1]/30 text-[#D8C7A1] text-xs font-mono">
               <span>{completedCount} / 2 submissions complete</span>
             </div>
 
@@ -246,10 +246,10 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               <button
                 onClick={handleCompleteDay}
                 disabled={completedCount < 2}
-                className={`w-full max-w-sm py-3.5 px-6 rounded-xl font-extrabold text-sm shadow-xl transition-all flex items-center justify-center gap-2 mx-auto active:scale-95 ${
+                className={`w-full max-w-sm py-3.5 px-6 rounded-xl font-bold text-xs font-mono uppercase tracking-wider transition-all flex items-center justify-center gap-2 mx-auto active:scale-95 ${
                   completedCount === 2
-                    ? 'bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-zinc-950 hover:from-orange-600 hover:to-amber-600 shadow-orange-950/50 cursor-pointer'
-                    : 'bg-zinc-800 text-zinc-500 border border-zinc-700 cursor-not-allowed'
+                    ? 'bg-[#F5F3EE] text-[#080A0C] hover:bg-[#B8F2D0] hover:-translate-y-0.5 cursor-pointer shadow-sm'
+                    : 'bg-[#151A1F] text-[#9BA3AA] border border-[#242A30] cursor-not-allowed'
                 }`}
               >
                 <span>Complete Day 12 →</span>
@@ -258,14 +258,14 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
             </div>
           </>
         ) : (
-          <div className="py-2 space-y-3 animate-fadeIn">
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl shadow-glow-emerald">
+          <div className="py-2 space-y-3">
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#B8F2D0]/10 border border-[#B8F2D0]/30 text-[#B8F2D0] flex items-center justify-center text-xl">
               ✓
             </div>
-            <h4 className="text-2xl font-black text-white tracking-tight text-emerald-400">
+            <h4 className="text-2xl font-black text-[#B8F2D0] tracking-tight font-mono">
               DAY 12 COMPLETED!
             </h4>
-            <p className="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto">
+            <p className="text-xs sm:text-sm text-[#9BA3AA] max-w-md mx-auto">
               Outstanding work! You&apos;ve extended your streak to 12 days. Keep building consistency every single day.
             </p>
           </div>

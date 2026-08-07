@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, CheckCircle2, Clock } from 'lucide-react';
+import { Calendar, CheckCircle2 } from 'lucide-react';
 import { StreakDay } from '@/lib/types';
 
 interface ActivityChartProps {
@@ -12,19 +12,19 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
   const [activeHover, setActiveHover] = useState<StreakDay | null>(null);
 
   return (
-    <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 sm:p-6 shadow-xl">
+    <div className="hardware-card p-5 sm:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-          <Calendar className="w-4 h-4 text-emerald-400" />
-          WEEKLY ACTIVITY
+        <h3 className="text-xs font-mono font-extrabold uppercase tracking-wider text-[#9BA3AA] flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-[#B8F2D0]" />
+          WEEKLY ACTIVITY LEDGER
         </h3>
-        <span className="text-xs text-zinc-400 font-mono">
+        <span className="text-[11px] text-[#B8F2D0] font-mono font-bold">
           6/7 Tasks Shipped This Week
         </span>
       </div>
 
-      {/* 7 Day Visual Dot Column Activity */}
-      <div className="grid grid-cols-7 gap-2 bg-zinc-950 p-4 rounded-xl border border-zinc-800/80 mb-3">
+      {/* 7 Day Visual Pillar Grid */}
+      <div className="grid grid-cols-7 gap-2 bg-[#151A1F] p-4 rounded-xl border border-[#242A30] mb-3">
         {week.map((item) => {
           const isDone = item.status === 'completed';
           const isToday = item.status === 'today';
@@ -37,20 +37,20 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
               className="flex flex-col items-center gap-2 group cursor-pointer"
             >
               {/* Activity Bar Pillar */}
-              <div className="relative w-full h-24 bg-zinc-900 rounded-lg flex items-end justify-center p-1 border border-zinc-800 group-hover:border-orange-500/50 transition-colors">
+              <div className="relative w-full h-24 bg-[#080A0C] rounded-lg flex items-end justify-center p-1 border border-[#242A30] group-hover:border-[#B8F2D0]/50 transition-colors">
                 <div
                   className={`w-full rounded-md transition-all duration-500 ${
                     isDone
-                      ? 'h-full bg-gradient-to-t from-emerald-600 to-emerald-400 shadow-glow-emerald'
+                      ? 'h-full bg-[#B8F2D0]'
                       : isToday
-                      ? 'h-1/2 bg-gradient-to-t from-orange-600 to-amber-400 animate-pulse'
-                      : 'h-1 bg-zinc-800'
+                      ? 'h-1/2 bg-[#D8C7A1] animate-pulse'
+                      : 'h-1 bg-[#242A30]'
                   }`}
                 />
               </div>
 
               {/* Day Label */}
-              <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider group-hover:text-white transition-colors">
+              <span className="text-[10px] font-mono font-bold text-[#9BA3AA] uppercase tracking-wider group-hover:text-[#F5F3EE] transition-colors">
                 {item.day}
               </span>
             </div>
@@ -59,17 +59,17 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
       </div>
 
       {/* Dynamic Hover Tooltip Banner */}
-      <div className="min-h-[32px] px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs flex items-center justify-between text-zinc-400">
+      <div className="min-h-[32px] px-3 py-1.5 rounded-lg bg-[#151A1F] border border-[#242A30] text-xs font-mono flex items-center justify-between text-[#9BA3AA]">
         {activeHover ? (
           <>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span className="flex items-center gap-1.5 text-[#F5F3EE]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#B8F2D0]" />
               <strong>{activeHover.day} ({activeHover.shortDate})</strong>: {activeHover.status === 'completed' ? 'Coding Challenge Completed + GitHub Proof Verified' : 'Today\'s Task Pending'}
             </span>
-            <span className="text-emerald-400 font-mono font-semibold">+100 XP</span>
+            <span className="text-[#B8F2D0] font-bold">+100 XP</span>
           </>
         ) : (
-          <span className="text-zinc-500 italic">Hover over any day pillar to view detailed submission proof stats.</span>
+          <span className="text-[#9BA3AA]/60 italic">Hover over any day pillar to view detailed submission proof stats.</span>
         )}
       </div>
     </div>

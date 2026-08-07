@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Flame, Trophy, LayoutDashboard, Home, Code2 } from 'lucide-react';
+import { Sparkles, LayoutDashboard, Home, Code2 } from 'lucide-react';
 
 interface NavbarProps {
   streakCount?: number;
@@ -21,11 +21,11 @@ export const Navbar: React.FC<NavbarProps> = ({ streakCount = 12 }) => {
   const isLandingPage = pathname === '/';
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-zinc-950/80 border-b border-zinc-800/60 transition-all">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#080A0C]/90 border-b border-[#242A30] transition-all">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-lg shadow-orange-950/50 ring-1 ring-orange-500/30 group-hover:scale-105 group-hover:ring-orange-500/60 transition-all">
+          <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-[#151A1F] border border-[#242A30] shadow-sm group-hover:border-[#B8F2D0]/40 transition-all flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/icon.png"
@@ -34,11 +34,11 @@ export const Navbar: React.FC<NavbarProps> = ({ streakCount = 12 }) => {
             />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold tracking-tight text-lg text-white font-sans">
-                AB<span className="text-orange-500">Talks</span>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold tracking-tight text-lg text-[#F5F3EE] font-sans">
+                AB<span className="text-[#B8F2D0]">Talks</span>
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
+              <span className="text-[10px] uppercase font-mono font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#D8C7A1]/10 text-[#D8C7A1] border border-[#D8C7A1]/20">
                 60D
               </span>
             </div>
@@ -46,62 +46,62 @@ export const Navbar: React.FC<NavbarProps> = ({ streakCount = 12 }) => {
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+        <nav className="hidden md:flex items-center gap-1 text-xs font-medium tracking-wide">
           {isLandingPage ? (
             <>
               <a
                 href="#how-it-works"
-                className="px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 transition-colors"
+                className="px-3.5 py-2 rounded-lg text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F] transition-all"
               >
-                How It Works
+                Framework
               </a>
               <a
                 href="#journey"
-                className="px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 transition-colors"
+                className="px-3.5 py-2 rounded-lg text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F] transition-all"
               >
-                60-Day Roadmap
+                Trajectory
               </a>
               <a
                 href="#proof"
-                className="px-3.5 py-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 transition-colors"
+                className="px-3.5 py-2 rounded-lg text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F] transition-all"
               >
-                Proof Grid
+                Proof Ledger
               </a>
             </>
           ) : (
             <>
               <Link
                 href="/"
-                className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 ${
                   isActive('/')
-                    ? 'bg-zinc-800/80 text-white font-semibold'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
+                    ? 'bg-[#151A1F] text-[#F5F3EE] font-semibold border border-[#242A30]'
+                    : 'text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F]'
                 }`}
               >
-                <Home className="w-4 h-4" />
+                <Home className="w-3.5 h-3.5" />
                 Home
               </Link>
               <Link
                 href="/dashboard"
-                className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 ${
                   isActive('/dashboard')
-                    ? 'bg-zinc-800/80 text-white font-semibold'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
+                    ? 'bg-[#151A1F] text-[#F5F3EE] font-semibold border border-[#242A30]'
+                    : 'text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F]'
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4" />
+                <LayoutDashboard className="w-3.5 h-3.5" />
                 Dashboard
               </Link>
               <Link
                 href="/day/12"
-                className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 ${
                   isActive('/day/12')
-                    ? 'bg-zinc-800/80 text-white font-semibold'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
+                    ? 'bg-[#151A1F] text-[#F5F3EE] font-semibold border border-[#242A30]'
+                    : 'text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F]'
                 }`}
               >
-                <Code2 className="w-4 h-4" />
-                Day 12 Task
+                <Code2 className="w-3.5 h-3.5" />
+                Day 12 Workspace
               </Link>
             </>
           )}
@@ -113,37 +113,37 @@ export const Navbar: React.FC<NavbarProps> = ({ streakCount = 12 }) => {
             <>
               <Link
                 href="/dashboard"
-                className="text-xs font-bold text-zinc-300 hover:text-white px-3 py-2 rounded-lg hover:bg-zinc-900 transition-colors"
+                className="text-xs font-semibold text-[#9BA3AA] hover:text-[#F5F3EE] px-3 py-2 rounded-lg hover:bg-[#151A1F] transition-all"
               >
-                Student Log In
+                Sign In
               </Link>
               <Link
                 href="/dashboard"
-                className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-zinc-950 font-extrabold text-xs shadow-md shadow-orange-950/40 transition-all flex items-center gap-1 active:scale-95"
+                className="px-4 py-2 rounded-xl bg-[#F5F3EE] text-[#080A0C] font-bold text-xs hover:bg-[#B8F2D0] hover:-translate-y-0.5 transition-all shadow-sm active:scale-95"
               >
-                <span>Start Challenge</span>
+                <span>Start Challenge →</span>
               </Link>
             </>
           ) : (
             <>
               {/* Late Night Ambient Indicator */}
-              <span className="hidden sm:flex items-center gap-1 text-[11px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                <span>🌙 Late Night Session</span>
+              <span className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-[#9BA3AA] bg-[#101418] border border-[#242A30] px-3 py-1.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B8F2D0] animate-pulse" />
+                <span>Late Night Protocol</span>
               </span>
 
               {/* Streak Counter Badge */}
               <Link
                 href="/dashboard"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold hover:border-amber-500/60 transition-all hover:scale-105"
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101418] border border-[#B8F2D0]/30 text-[#B8F2D0] text-xs font-mono font-bold hover:border-[#B8F2D0]/60 transition-all hover:scale-105"
               >
-                <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse-flame" />
+                <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
                 <span>{streakCount} DAY STREAK</span>
               </Link>
 
               {/* Profile Badge */}
               <Link href="/dashboard" className="flex items-center gap-2 pl-1 group">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-orange-500/40 group-hover:ring-orange-500 transition-all">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden ring-1 ring-[#242A30] group-hover:ring-[#B8F2D0]/50 transition-all">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
