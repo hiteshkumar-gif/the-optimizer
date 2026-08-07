@@ -24,9 +24,14 @@ export const Navbar: React.FC<NavbarProps> = ({ streakCount = 12 }) => {
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-zinc-950/80 border-b border-zinc-800/60 transition-all">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 via-orange-600 to-red-600 flex items-center justify-center shadow-lg shadow-orange-950/40 group-hover:scale-105 transition-transform">
-            <Flame className="w-5 h-5 text-white stroke-[2.5]" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-lg shadow-orange-950/50 ring-1 ring-orange-500/30 group-hover:scale-105 group-hover:ring-orange-500/60 transition-all">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/icon.png"
+              alt="ABTalks Logo"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">

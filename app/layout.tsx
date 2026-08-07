@@ -13,10 +13,26 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'ABTalks — 60-Day Developer Challenge',
   description: 'Build consistency, ship every day, and prove your progress with ABTalks. 60 Days. One Streak. A Better Developer.',
+  icons: {
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+    apple: '/icon.png',
+  },
   openGraph: {
     title: 'ABTalks — 60-Day Developer Challenge',
     description: 'Build consistency, ship every day, and prove your progress with ABTalks.',
     type: 'website',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 1200,
+        alt: 'ABTalks 60-Day Coding Challenge Logo',
+      },
+    ],
   },
 };
 
