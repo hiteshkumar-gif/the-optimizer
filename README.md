@@ -86,3 +86,11 @@ npx vercel
 ```
 
 Or connect the GitHub repository directly to Vercel with automatic Next.js framework detection.
+
+---
+
+<div align="center">
+
+### ✨ Vibe Coded by Hitesh Kumar
+
+</div>

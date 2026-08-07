@@ -149,3 +149,11 @@ This project was developed with AI-assisted coding using Google Antigravity.
 > Do not add unnecessary features.
 >
 > Ensure the final experience feels intentionally designed for a 390px mobile viewport and is ready for hackathon submission.
+
+---
+
+<div align="center">
+
+**Vibe Coded by Hitesh Kumar**
+
+</div>
