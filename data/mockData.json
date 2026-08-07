@@ -1,0 +1,167 @@
+{
+  "student": {
+    "name": "Hitesh Kumar",
+    "handle": "@hitesh_dev",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
+    "rank": 24,
+    "totalParticipants": 300,
+    "topPercentage": "Top 8%",
+    "xp": 1240,
+    "currentStreak": 12,
+    "bestStreak": 12,
+    "totalDays": 60,
+    "daysCompleted": 12,
+    "daysRemaining": 48,
+    "completionPercentage": 20,
+    "streakProtected": false
+  },
+  "streak": {
+    "week": [
+      { "day": "Mon", "shortDate": "Aug 1", "status": "completed" },
+      { "day": "Tue", "shortDate": "Aug 2", "status": "completed" },
+      { "day": "Wed", "shortDate": "Aug 3", "status": "completed" },
+      { "day": "Thu", "shortDate": "Aug 4", "status": "completed" },
+      { "day": "Fri", "shortDate": "Aug 5", "status": "completed" },
+      { "day": "Sat", "shortDate": "Aug 6", "status": "completed" },
+      { "day": "Sun", "shortDate": "Today", "status": "today" }
+    ]
+  },
+  "achievements": [
+    {
+      "id": "ach_1",
+      "title": "First Commit",
+      "description": "Shipped Day 1 coding task and published proof",
+      "icon": "🏁",
+      "unlocked": true,
+      "unlockedAt": "Day 1"
+    },
+    {
+      "id": "ach_2",
+      "title": "7 Day Streak",
+      "description": "Maintained an uninterrupted 7-day coding streak",
+      "icon": "🔥",
+      "unlocked": true,
+      "unlockedAt": "Day 7"
+    },
+    {
+      "id": "ach_3",
+      "title": "10 Day Streak",
+      "description": "Passed double digits with consistent daily work",
+      "icon": "⚡",
+      "unlocked": true,
+      "unlockedAt": "Day 10"
+    },
+    {
+      "id": "ach_4",
+      "title": "30 Day Streak",
+      "description": "Halfway through the 60-day challenge!",
+      "icon": "🚀",
+      "unlocked": false,
+      "unlockedAt": null
+    },
+    {
+      "id": "ach_5",
+      "title": "60 Day Finisher",
+      "description": "Completed the entire 60-day challenge journey",
+      "icon": "🏆",
+      "unlocked": false,
+      "unlockedAt": null
+    }
+  ],
+  "leaderboard": [
+    {
+      "rank": 23,
+      "name": "Alex Rivers",
+      "handle": "@arivers",
+      "xp": 1290,
+      "streak": 14,
+      "avatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80",
+      "isCurrentUser": false
+    },
+    {
+      "rank": 24,
+      "name": "Hitesh Kumar",
+      "handle": "@hitesh_dev",
+      "xp": 1240,
+      "streak": 12,
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      "isCurrentUser": true
+    },
+    {
+      "rank": 25,
+      "name": "Priya Sharma",
+      "handle": "@psharma_code",
+      "xp": 1210,
+      "streak": 11,
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+      "isCurrentUser": false
+    }
+  ],
+  "days": {
+    "12": {
+      "id": 12,
+      "title": "Build a Responsive Developer Portfolio",
+      "subtitle": "Turn your progress into something you can show the world.",
+      "difficulty": "Intermediate",
+      "estimatedTime": "45 min",
+      "skills": ["HTML", "CSS", "JavaScript"],
+      "mission": [
+        "Create a clean Hero section with your headline and primary contact CTA",
+        "Add an About section detailing your developer background & goals",
+        "Build an interactive Skills section with category tags",
+        "Implement a responsive Projects section showcasing your recent work",
+        "Include a Contact section with accessible social links and contact form"
+      ],
+      "beforeYouStart": "Ensure your project structure is organized cleanly with semantic HTML tags (<header>, <main>, <section>, <footer>) and responsive CSS media queries.",
+      "whatYoullLearn": [
+        "Mobile-first responsive design strategies",
+        "Semantic HTML5 element hierarchy",
+        "Modern CSS Flexbox & Grid layouts",
+        "Component-driven structure thinking"
+      ],
+      "proTips": [
+        "Design for 390px mobile viewport first before scaling up to desktop screens.",
+        "Keep color contrast high and font sizes readable on smaller mobile screens.",
+        "Add subtle transition effects on hover and tap states to make the interface feel responsive."
+      ],
+      "resources": [
+        { "title": "CSS Grid & Flexbox Complete Guide", "url": "#", "type": "Documentation" },
+        { "title": "Semantic HTML5 Checklist", "url": "#", "type": "Article" },
+        { "title": "Responsive Typography Guidelines", "url": "#", "type": "Guide" }
+      ]
+    }
+  },
+  "submissions": {
+    "12": {
+      "githubUrl": "https://github.com/hiteshkumar/day12-responsive-portfolio",
+      "linkedinUrl": "https://linkedin.com/posts/hiteshkumar-day12-challenge",
+      "githubSubmitted": true,
+      "linkedinSubmitted": true,
+      "status": "pending_review"
+    }
+  },
+  "streakShieldTask": {
+    "title": "Fix 3 JavaScript Snippet Bugs",
+    "description": "Complete this 5-minute emergency debugging challenge to protect your 12-day streak!",
+    "bugs": [
+      {
+        "id": 1,
+        "question": "Which operator performs strict equality comparison without type coercion?",
+        "options": ["==", "===", "=", "equals()"],
+        "correctIndex": 1
+      },
+      {
+        "id": 2,
+        "question": "How do you correctly declare an immutable block-scoped variable in modern JS?",
+        "options": ["var x = 10;", "let x = 10;", "const x = 10;", "immutable x = 10;"],
+        "correctIndex": 2
+      },
+      {
+        "id": 3,
+        "question": "What does Array.prototype.map() return?",
+        "options": ["A new array with modified elements", "Original array modified in place", "Length of the array", "Undefined"],
+        "correctIndex": 0
+      }
+    ]
+  }
+}
