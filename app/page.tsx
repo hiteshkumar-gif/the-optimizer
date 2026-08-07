@@ -372,6 +372,13 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
+
+        {/* Absolute bottom subtle credit */}
+        <div className="mt-8 pt-6 border-t border-zinc-900 text-center">
+          <p className="text-[11px] font-medium tracking-wide text-zinc-500">
+            Voted by <span className="text-orange-400/90 font-semibold">Hitesh Kumar</span>
+          </p>
+        </div>
       </footer>
     </div>
   );
