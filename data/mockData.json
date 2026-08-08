@@ -1,7 +1,7 @@
 {
   "student": {
-    "name": "Hitesh Kumar",
-    "handle": "@hitesh_dev",
+    "name": "Student Developer",
+    "handle": "@student_dev",
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
     "rank": 24,
     "totalParticipants": 300,
@@ -80,8 +80,8 @@
     },
     {
       "rank": 24,
-      "name": "Hitesh Kumar",
-      "handle": "@hitesh_dev",
+      "name": "Student Developer",
+      "handle": "@student_dev",
       "xp": 1240,
       "streak": 12,
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",

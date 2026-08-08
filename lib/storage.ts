@@ -16,8 +16,8 @@ export const getDefaultStudentProfile = (): DemoStudentProfile => {
   const base = mockDataRaw.student as Student;
   return {
     ...base,
-    name: 'Hitesh Kumar',
-    email: 'hitesh@example.com',
+    name: 'Developer',
+    email: 'developer@example.com',
     track: 'Fullstack Web Development',
     createdAt: new Date().toISOString(),
     lastActiveDate: new Date().toISOString(),

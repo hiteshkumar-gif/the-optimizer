@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { getStoredDaySubmission, saveDaySubmission, saveStoredStudent, getStoredStudent } from '@/lib/storage';
+import { useAuth } from '@/lib/AuthContext';
 
 interface SubmissionFormProps {
   dayId?: string | number;
@@ -24,6 +24,8 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
   initialLinkedinUrl,
   onSubmissionUpdate,
 }) => {
+  const { user, getDaySubmission, saveSubmission } = useAuth();
+
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
 
@@ -37,12 +39,9 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
   const [submissionStatus, setSubmissionStatus] = useState<string>('Pending Review');
 
   useEffect(() => {
-    const stored = getStoredDaySubmission(dayId);
-    const defaultGh = initialGithubUrl || 'https://github.com/hiteshkumar/day12-portfolio';
-    const defaultLi = initialLinkedinUrl || 'https://linkedin.com/posts/hiteshkumar-day12';
-
-    const gh = stored.githubUrl || defaultGh;
-    const li = stored.linkedinUrl || defaultLi;
+    const stored = getDaySubmission(dayId);
+    const gh = stored.githubUrl || initialGithubUrl || '';
+    const li = stored.linkedinUrl || initialLinkedinUrl || '';
 
     setGithubUrl(gh);
     setLinkedinUrl(li);
@@ -57,7 +56,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
       setIsCompleted(true);
       setSubmissionStatus('Submitted — Saved to Streak Timeline');
     }
-  }, [dayId, initialGithubUrl, initialLinkedinUrl]);
+  }, [dayId, initialGithubUrl, initialLinkedinUrl, user]);
 
   const validateGithub = (url: string) => {
     if (!url || !url.trim()) {
@@ -73,8 +72,8 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     setGithubError(null);
     setGithubVerified(true);
 
-    // Save to storage
-    saveDaySubmission(dayId, {
+    // Save to user database record
+    saveSubmission(dayId, {
       githubUrl: url,
       githubSubmitted: true,
       status: linkedinVerified ? 'completed' : 'pending_review',
@@ -97,8 +96,8 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     setLinkedinError(null);
     setLinkedinVerified(true);
 
-    // Save to storage
-    saveDaySubmission(dayId, {
+    // Save to user database record
+    saveSubmission(dayId, {
       linkedinUrl: url,
       linkedinSubmitted: true,
       status: githubVerified ? 'completed' : 'pending_review',
@@ -115,7 +114,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     validateLinkedin(linkedinUrl);
   };
 
-  const handleCompleteDay = () => {
+  const handleCompleteDay = async () => {
     const isGhValid = validateGithub(githubUrl);
     const isLiValid = validateLinkedin(linkedinUrl);
 
@@ -123,7 +122,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
       setIsCompleted(true);
       setSubmissionStatus('Submitted — Saved to Streak Timeline');
 
-      saveDaySubmission(dayId, {
+      await saveSubmission(dayId, {
         githubUrl,
         linkedinUrl,
         githubSubmitted: true,
@@ -131,19 +130,11 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
         status: 'completed',
       });
 
-      // Update student profile stats in localStorage
-      const currentStudent = getStoredStudent();
-      saveStoredStudent({
-        daysCompleted: Math.max(currentStudent.daysCompleted || 0, 12),
-        currentStreak: Math.max(currentStudent.currentStreak || 0, 12),
-        xp: (currentStudent.xp || 0) + 100,
-      });
-
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#B8F2D0', '#D8C7A1', '#F5F3EE']
+        colors: ['#B8F2D0', '#D8C7A1', '#F5F3EE'],
       });
 
       if (onSubmissionUpdate) {

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { AuthProvider } from '@/lib/AuthContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -44,11 +45,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} dark scroll-smooth`}>
       <body className="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-orange-500 selection:text-white">
-        <Navbar streakCount={12} />
-        <main className="flex-1 pb-20 md:pb-10">
-          {children}
-        </main>
-        <MobileBottomNav />
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-1 pb-20 md:pb-10">
+            {children}
+          </main>
+          <MobileBottomNav />
+        </AuthProvider>
       </body>
     </html>
   );

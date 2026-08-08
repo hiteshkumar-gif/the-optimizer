@@ -1,5 +1,7 @@
 export interface Student {
+  uid?: string;
   name: string;
+  email?: string;
   handle: string;
   avatar: string;
   rank: number;
@@ -13,6 +15,10 @@ export interface Student {
   daysRemaining: number;
   completionPercentage: number;
   streakProtected?: boolean;
+  track?: string;
+  createdAt?: string;
+  lastActiveDate?: string;
+  lastSubmissionDate?: string;
 }
 
 export interface StreakDay {

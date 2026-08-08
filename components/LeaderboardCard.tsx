@@ -47,48 +47,58 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
         <div className="text-xs font-mono font-bold text-[#9BA3AA] uppercase tracking-wider mb-2">
           Peer Standing Cohort
         </div>
-        {leaderboard.map((user) => (
-          <div
-            key={user.rank}
-            className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
-              user.isCurrentUser
-                ? 'bg-[#151A1F] border-[#B8F2D0]/50 shadow-sm'
-                : 'bg-[#080A0C] border-[#242A30] hover:bg-[#101418]'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <span className={`w-6 text-center font-mono font-bold text-xs ${user.isCurrentUser ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
-                #{user.rank}
-              </span>
+        {leaderboard.map((user) => {
+          const isMe = user.isCurrentUser;
+          const displayName = isMe ? student.name : user.name;
+          const displayHandle = isMe ? student.handle : user.handle;
+          const displayAvatar = isMe ? student.avatar : user.avatar;
+          const displayStreak = isMe ? student.currentStreak : user.streak;
+          const displayXp = isMe ? student.xp : user.xp;
+          const displayRank = isMe ? student.rank : user.rank;
 
-              {/* Avatar */}
-              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#242A30]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
-              </div>
+          return (
+            <div
+              key={user.rank}
+              className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
+                isMe
+                  ? 'bg-[#151A1F] border-[#B8F2D0]/50 shadow-sm'
+                  : 'bg-[#080A0C] border-[#242A30] hover:bg-[#101418]'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`w-6 text-center font-mono font-bold text-xs ${isMe ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
+                  #{displayRank}
+                </span>
 
-              <div>
-                <div className="text-xs font-bold text-[#F5F3EE] flex items-center gap-1.5">
-                  <span>{user.name}</span>
-                  {user.isCurrentUser && (
-                    <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.2 rounded bg-[#B8F2D0] text-[#080A0C]">
-                      YOU
-                    </span>
-                  )}
+                {/* Avatar */}
+                <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#242A30]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={displayAvatar} alt={displayName} className="w-full h-full object-cover" />
                 </div>
-                <div className="text-[10px] text-[#9BA3AA] font-mono">{user.handle}</div>
+
+                <div>
+                  <div className="text-xs font-bold text-[#F5F3EE] flex items-center gap-1.5">
+                    <span>{displayName}</span>
+                    {isMe && (
+                      <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.2 rounded bg-[#B8F2D0] text-[#080A0C]">
+                        YOU
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[10px] text-[#9BA3AA] font-mono">{displayHandle}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 text-xs">
+                <span className="flex items-center gap-1 text-[#B8F2D0] font-mono font-medium">
+                  <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
+                  {displayStreak}d
+                </span>
+                <span className="font-mono font-bold text-[#D8C7A1]">{displayXp} XP</span>
               </div>
             </div>
-
-            <div className="flex items-center gap-3 text-xs">
-              <span className="flex items-center gap-1 text-[#B8F2D0] font-mono font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
-                {user.streak}d
-              </span>
-              <span className="font-mono font-bold text-[#D8C7A1]">{user.xp} XP</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

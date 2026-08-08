@@ -11,14 +11,15 @@ import {
   Star,
 } from 'lucide-react';
 import { DemoLoginModal } from '@/components/DemoLoginModal';
-import { isDemoLoggedIn } from '@/lib/storage';
+import { useAuth } from '@/lib/AuthContext';
 
 export default function LandingPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   const handleStartClick = (e: React.MouseEvent) => {
-    if (!isDemoLoggedIn()) {
+    if (!user) {
       e.preventDefault();
       setIsOnboardingOpen(true);
     } else {

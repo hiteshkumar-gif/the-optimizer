@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { getDayTask, getSubmissionData } from '@/lib/data';
+import { getDayTask } from '@/lib/data';
 import { SubmissionForm } from '@/components/SubmissionForm';
 import { DemoLoginModal } from '@/components/DemoLoginModal';
+import { useAuth } from '@/lib/AuthContext';
 import {
   ArrowLeft,
   Clock,
@@ -17,22 +18,22 @@ import {
   ExternalLink,
   Sparkles,
 } from 'lucide-react';
-import { isDemoLoggedIn } from '@/lib/storage';
 
 export default function DayWorkspacePage() {
   const params = useParams();
   const dayId = params?.id ? String(params.id) : '12';
   const task = getDayTask(dayId);
-  const initialSub = getSubmissionData(dayId);
+  const { user, loading, getDaySubmission } = useAuth();
+  const initialSub = getDaySubmission(dayId);
 
   const [openAccordion, setOpenAccordion] = useState<string | null>('mission');
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   useEffect(() => {
-    if (!isDemoLoggedIn() && typeof window !== 'undefined') {
+    if (!loading && !user) {
       setIsOnboardingOpen(true);
     }
-  }, []);
+  }, [loading, user]);
 
   const toggleAccordion = (id: string) => {
     setOpenAccordion(openAccordion === id ? null : id);

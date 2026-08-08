@@ -26,7 +26,7 @@ export const getStudentData = (overrideState?: 'normal' | 'new' | 'missed' | 'em
   if (overrideState === 'new') {
     return {
       ...base,
-      name: 'Hitesh Kumar',
+      name: 'Developer',
       currentStreak: 0,
       bestStreak: 0,
       daysCompleted: 0,
@@ -41,7 +41,7 @@ export const getStudentData = (overrideState?: 'normal' | 'new' | 'missed' | 'em
   if (overrideState === 'missed') {
     return {
       ...base,
-      name: 'Hitesh Kumar',
+      name: 'Developer',
       currentStreak: 0,
       bestStreak: 11,
       streakProtected: false,
