@@ -1,14 +1,51 @@
 'use client';
 
 import React from 'react';
-import { Achievement } from '@/lib/types';
+import { Achievement, Student } from '@/lib/types';
 import { Lock, Award } from 'lucide-react';
 
 interface AchievementSectionProps {
   achievements: Achievement[];
+  student?: Student;
 }
 
-export const AchievementSection: React.FC<AchievementSectionProps> = ({ achievements }) => {
+export const AchievementSection: React.FC<AchievementSectionProps> = ({ achievements, student }) => {
+  const daysCompleted = student?.daysCompleted || 0;
+  const bestStreak = student?.bestStreak || student?.currentStreak || 0;
+
+  const dynamicAchievements = achievements.map((ach) => {
+    let unlocked = false;
+    let unlockedAt: string | null = null;
+
+    if (ach.id === 'ach_1') {
+      unlocked = daysCompleted >= 1;
+      if (unlocked) unlockedAt = 'Day 1';
+    } else if (ach.id === 'ach_2') {
+      unlocked = bestStreak >= 7;
+      if (unlocked) unlockedAt = 'Day 7';
+    } else if (ach.id === 'ach_3') {
+      unlocked = bestStreak >= 10;
+      if (unlocked) unlockedAt = 'Day 10';
+    } else if (ach.id === 'ach_4') {
+      unlocked = bestStreak >= 30;
+      if (unlocked) unlockedAt = 'Day 30';
+    } else if (ach.id === 'ach_5') {
+      unlocked = daysCompleted >= 60;
+      if (unlocked) unlockedAt = 'Day 60';
+    } else {
+      unlocked = ach.unlocked;
+      unlockedAt = ach.unlockedAt;
+    }
+
+    return {
+      ...ach,
+      unlocked,
+      unlockedAt,
+    };
+  });
+
+  const unlockedCount = dynamicAchievements.filter((a) => a.unlocked).length;
+
   return (
     <div className="hardware-card p-5 sm:p-6">
       <div className="flex items-center justify-between mb-5">
@@ -17,13 +54,13 @@ export const AchievementSection: React.FC<AchievementSectionProps> = ({ achievem
           ACHIEVEMENTS & BADGES
         </h3>
         <span className="text-[11px] text-[#D8C7A1] font-mono">
-          {achievements.filter((a) => a.unlocked).length} / {achievements.length} UNLOCKED
+          {unlockedCount} / {dynamicAchievements.length} UNLOCKED
         </span>
       </div>
 
       {/* Horizontal Scrollable Container */}
       <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory -mx-1 px-1">
-        {achievements.map((ach) => (
+        {dynamicAchievements.map((ach) => (
           <div
             key={ach.id}
             className={`flex-none w-56 snap-start p-4 rounded-xl border transition-all ${
@@ -52,7 +89,7 @@ export const AchievementSection: React.FC<AchievementSectionProps> = ({ achievem
               {ach.description}
             </p>
 
-            {ach.unlockedAt && (
+            {ach.unlockedAt && ach.unlocked && (
               <span className="text-[10px] text-[#D8C7A1] font-mono font-medium">
                 Achieved on {ach.unlockedAt}
               </span>

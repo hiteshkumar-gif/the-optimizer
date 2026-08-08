@@ -18,7 +18,7 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
           YOUR STANDING & LEADERBOARD
         </h3>
         <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-[#151A1F] border border-[#B8F2D0]/30 text-[#B8F2D0] font-bold">
-          {student.topPercentage || 'Top 8%'}
+          {student.topPercentage || 'Top 100%'}
         </span>
       </div>
 

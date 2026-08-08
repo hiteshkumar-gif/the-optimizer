@@ -185,7 +185,7 @@ export default function DashboardPage() {
             <LeaderboardCard student={student} leaderboard={mockData.leaderboard} />
 
             {/* ACHIEVEMENTS */}
-            <AchievementSection achievements={mockData.achievements} />
+            <AchievementSection achievements={mockData.achievements} student={student} />
           </div>
         </div>
       </div>
