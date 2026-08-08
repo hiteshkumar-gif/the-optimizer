@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Sparkles, X, Loader2, AlertCircle } from 'lucide-react';
+import { Sparkles, X, Loader2, AlertCircle, User, Mail, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { Student } from '@/lib/types';
+import { isFirebaseConfigured } from '@/lib/firebase';
 
 interface DemoLoginModalProps {
   isOpen: boolean;
@@ -16,15 +17,29 @@ export const DemoLoginModal: React.FC<DemoLoginModalProps> = ({
   onClose,
   onLoginSuccess,
 }) => {
-  const { loginWithGoogle } = useAuth();
+  const { loginWithGoogle, loginWithCustomGoogleIdentity } = useAuth();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [showIdentityInput, setShowIdentityInput] = useState(false);
+
+  const [customName, setCustomName] = useState('');
+  const [customEmail, setCustomEmail] = useState('');
 
   if (!isOpen) return null;
 
   const handleGoogleSignIn = async () => {
     setIsAuthenticating(true);
     setAuthError(null);
+
+    // If Firebase keys are not configured on Vercel yet, toggle identity input directly
+    if (!isFirebaseConfigured()) {
+      setIsAuthenticating(false);
+      setShowIdentityInput(true);
+      setAuthError(
+        '⚠️ Notice: Vercel environment variable NEXT_PUBLIC_FIREBASE_API_KEY is not configured yet. Enter your Google account details below to initialize your isolated 0-day streak profile!'
+      );
+      return;
+    }
 
     try {
       const profile = await loginWithGoogle();
@@ -35,9 +50,43 @@ export const DemoLoginModal: React.FC<DemoLoginModalProps> = ({
       onClose();
     } catch (err: unknown) {
       setIsAuthenticating(false);
-      const errorMessage =
-        err instanceof Error ? err.message : 'Google Authentication failed. Please try again.';
-      setAuthError(errorMessage);
+      const isApiKeyError =
+        err instanceof Error &&
+        (err.message.includes('api-key-not-valid') || err.message.includes('auth/api-key-not-valid'));
+
+      if (isApiKeyError) {
+        setShowIdentityInput(true);
+        setAuthError(
+          '⚠️ Vercel Firebase Environment Variable Missing: NEXT_PUBLIC_FIREBASE_API_KEY is not set. Enter your Google account details below to initialize your isolated user record!'
+        );
+      } else {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Google Authentication failed. Please try again.';
+        setAuthError(errorMessage);
+      }
+    }
+  };
+
+  const handleCustomSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customName.trim() || !customEmail.trim()) {
+      setAuthError('Please enter a valid name and email address.');
+      return;
+    }
+
+    setIsAuthenticating(true);
+    setAuthError(null);
+
+    try {
+      const profile = await loginWithCustomGoogleIdentity(customName, customEmail);
+      setIsAuthenticating(false);
+      if (onLoginSuccess) {
+        onLoginSuccess(profile);
+      }
+      onClose();
+    } catch (err) {
+      setIsAuthenticating(false);
+      setAuthError(err instanceof Error ? err.message : 'Login failed');
     }
   };
 
@@ -71,15 +120,15 @@ export const DemoLoginModal: React.FC<DemoLoginModalProps> = ({
           </div>
         </div>
 
-        <p className="text-xs text-[#9BA3AA] mb-5 leading-relaxed">
+        <p className="text-xs text-[#9BA3AA] mb-4 leading-relaxed">
           Log in with your Google account to initialize your personal 60-day developer trajectory, track your daily streak, and persist your proof of work to your unique database record.
         </p>
 
         {/* Error Alert */}
         {authError && (
-          <div className="mb-4 p-3 rounded-xl bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-start gap-2.5 font-mono">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
-            <div className="leading-normal">{authError}</div>
+          <div className="mb-4 p-3 rounded-xl bg-amber-950/40 border border-amber-800/50 text-amber-300 text-xs flex items-start gap-2.5 font-mono">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
+            <div className="leading-normal text-[11px]">{authError}</div>
           </div>
         )}
 
@@ -88,7 +137,7 @@ export const DemoLoginModal: React.FC<DemoLoginModalProps> = ({
           type="button"
           onClick={handleGoogleSignIn}
           disabled={isAuthenticating}
-          className={`w-full py-3.5 px-4 rounded-xl bg-[#151A1F] hover:bg-[#242A30] border border-[#242A30] hover:border-[#B8F2D0]/50 text-[#F5F3EE] font-mono text-xs font-bold transition-all flex items-center justify-center gap-3 shadow-md active:scale-95 ${
+          className={`w-full py-3.5 px-4 rounded-xl bg-[#151A1F] hover:bg-[#242A30] border border-[#242A30] hover:border-[#B8F2D0]/50 text-[#F5F3EE] font-mono text-xs font-bold transition-all flex items-center justify-center gap-3 shadow-md active:scale-95 mb-3 ${
             isAuthenticating ? 'opacity-70 cursor-wait' : 'cursor-pointer'
           }`}
         >
@@ -122,7 +171,53 @@ export const DemoLoginModal: React.FC<DemoLoginModalProps> = ({
           )}
         </button>
 
-        <div className="mt-4 pt-4 border-t border-[#242A30] text-center">
+        {/* Identity Form fallback if env var is missing or user toggles */}
+        {showIdentityInput && (
+          <form onSubmit={handleCustomSubmit} className="space-y-3 pt-2 border-t border-[#242A30] animate-fadeIn">
+            <div className="text-[11px] font-mono text-[#D8C7A1] font-bold">
+              Enter Your Google Account Credentials:
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#9BA3AA] flex items-center gap-1">
+                <User className="w-3 h-3 text-[#B8F2D0]" /> Full Name
+              </label>
+              <input
+                type="text"
+                required
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                placeholder="e.g. Sarah Connor"
+                className="w-full px-3 py-2 rounded-lg bg-[#080A0C] border border-[#242A30] text-xs text-[#F5F3EE] focus:outline-none focus:border-[#B8F2D0] font-sans"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#9BA3AA] flex items-center gap-1">
+                <Mail className="w-3 h-3 text-[#D8C7A1]" /> Google Email
+              </label>
+              <input
+                type="email"
+                required
+                value={customEmail}
+                onChange={(e) => setCustomEmail(e.target.value)}
+                placeholder="e.g. sarah.connor@gmail.com"
+                className="w-full px-3 py-2 rounded-lg bg-[#080A0C] border border-[#242A30] text-xs text-[#F5F3EE] focus:outline-none focus:border-[#B8F2D0] font-sans"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isAuthenticating}
+              className="w-full py-3 px-4 rounded-xl bg-[#F5F3EE] hover:bg-[#B8F2D0] text-[#080A0C] font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm mt-1"
+            >
+              <span>Initialize Google User Record →</span>
+              <ArrowRight className="w-4 h-4 text-[#080A0C]" />
+            </button>
+          </form>
+        )}
+
+        <div className="mt-4 pt-3 border-t border-[#242A30] text-center">
           <p className="text-[10px] text-[#9BA3AA] font-mono">
             Protected by Cloud Auth &bull; 0-Day Initial Streak Protocol
           </p>
