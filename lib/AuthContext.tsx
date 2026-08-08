@@ -185,6 +185,51 @@ export const getCalendarWeekItems = (
   return items;
 };
 
+const getStoredLocalProfile = (uid: string): Student | null => {
+  if (typeof window === 'undefined') return null;
+  const keys = [
+    `${USER_STORAGE_PREFIX}${uid}_profile`,
+    `abtalks_user_v2_${uid}_profile`,
+    `abtalks_user_${uid}_profile`,
+    `abtalks_user_profile`,
+    `abtalks_student`,
+  ];
+  for (const key of keys) {
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && parsed.name) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+  return null;
+};
+
+const getStoredLocalSubmissions = (uid: string): Record<string, SubmissionData> => {
+  if (typeof window === 'undefined') return {};
+  const keys = [
+    `${USER_STORAGE_PREFIX}${uid}_submissions`,
+    `abtalks_user_v2_${uid}_submissions`,
+    `abtalks_user_${uid}_submissions`,
+    `abtalks_submissions`,
+  ];
+  for (const key of keys) {
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+  return {};
+};
+
 const createNewUserProfile = (uid: string, name: string, email: string, avatar?: string): Student => {
   const displayName = name.trim() || 'Developer';
   const cleanEmail = email.trim() || 'developer@gmail.com';
@@ -202,7 +247,7 @@ const createNewUserProfile = (uid: string, name: string, email: string, avatar?:
     totalParticipants: 300,
     topPercentage: 'Top 100%',
     xp: 0,
-    currentStreak: 0, // DAY 0 INITIAL STREAK STARTS AT 0 DAYS
+    currentStreak: 0,
     bestStreak: 0,
     longestStreak: 0,
     totalDays: 60,
@@ -212,7 +257,7 @@ const createNewUserProfile = (uid: string, name: string, email: string, avatar?:
     streakProtected: false,
     track: 'Fullstack Web Development',
     createdAt: new Date().toISOString(),
-    programStartDate: undefined, // Day 0 until onboarding is completed
+    programStartDate: undefined,
     currentDay: 0,
     githubHandle: '',
     linkedinUrl: '',
@@ -227,30 +272,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
 
   const syncUserData = async (uid: string, name?: string | null, email?: string | null, avatar?: string | null): Promise<Student> => {
-    let profile: Student | null = null;
-    let userSubmissions: Record<string, SubmissionData> = {};
-
-    const localProfileKey = `${USER_STORAGE_PREFIX}${uid}_profile`;
-    const localSubKey = `${USER_STORAGE_PREFIX}${uid}_submissions`;
-
-    if (typeof window !== 'undefined') {
-      const rawP = localStorage.getItem(localProfileKey);
-      if (rawP) {
-        try {
-          profile = JSON.parse(rawP) as Student;
-        } catch (e) {
-          console.error('Error parsing local profile backup:', e);
-        }
-      }
-      const rawS = localStorage.getItem(localSubKey);
-      if (rawS) {
-        try {
-          userSubmissions = JSON.parse(rawS);
-        } catch (e) {
-          console.error('Error parsing local submissions backup:', e);
-        }
-      }
-    }
+    let profile: Student | null = getStoredLocalProfile(uid);
+    let userSubmissions: Record<string, SubmissionData> = getStoredLocalSubmissions(uid);
 
     if (isFirebaseConfigured()) {
       try {
@@ -284,7 +307,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
     }
 
-    // Re-calculate streak and day number from saved completions
     const currentDayNum = calculateCurrentDayNumber(profile);
     const { currentStreak, longestStreak } = calculateStreakFromHistory(userSubmissions, profile);
 
@@ -297,7 +319,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     if (typeof window !== 'undefined') {
-      localStorage.setItem(localProfileKey, JSON.stringify(profile));
+      localStorage.setItem(`${USER_STORAGE_PREFIX}${uid}_profile`, JSON.stringify(profile));
       localStorage.setItem(ACTIVE_SESSION_KEY, uid);
     }
 
@@ -313,7 +335,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (subSnap.exists()) {
           userSubmissions = subSnap.data() as Record<string, SubmissionData>;
           if (typeof window !== 'undefined') {
-            localStorage.setItem(localSubKey, JSON.stringify(userSubmissions));
+            localStorage.setItem(`${USER_STORAGE_PREFIX}${uid}_submissions`, JSON.stringify(userSubmissions));
           }
         }
       } catch (err) {
@@ -333,13 +355,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const activeUid = typeof window !== 'undefined' ? localStorage.getItem(ACTIVE_SESSION_KEY) : null;
         if (activeUid) {
-          const profileKey = `${USER_STORAGE_PREFIX}${activeUid}_profile`;
-          const subKey = `${USER_STORAGE_PREFIX}${activeUid}_submissions`;
-          const savedRaw = typeof window !== 'undefined' ? localStorage.getItem(profileKey) : null;
-          if (savedRaw) {
-            const savedProfile = JSON.parse(savedRaw) as Student;
-            const savedSub = typeof window !== 'undefined' && localStorage.getItem(subKey) ? JSON.parse(localStorage.getItem(subKey)!) : {};
-            
+          const savedProfile = getStoredLocalProfile(activeUid);
+          const savedSub = getStoredLocalSubmissions(activeUid);
+
+          if (savedProfile) {
             const currentDayNum = calculateCurrentDayNumber(savedProfile);
             const { currentStreak, longestStreak } = calculateStreakFromHistory(savedSub, savedProfile);
 
@@ -466,7 +485,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       linkedinUrl: linkedinUrl.trim(),
       track: track || userProfile.track || 'Fullstack Web Development',
       programStartDate: todayStr,
-      currentDay: 1, // Progress to Day 1
+      currentDay: 1,
       lastActiveDate: new Date().toISOString(),
     };
 
@@ -491,7 +510,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updated.completionPercentage = Math.min(100, Math.round((completed / total) * 100));
     }
 
-    // Re-calculate streak dynamically
     const { currentStreak, longestStreak } = calculateStreakFromHistory(submissions, updated);
     updated.currentStreak = currentStreak;
     updated.bestStreak = Math.max(updated.bestStreak || 0, longestStreak);

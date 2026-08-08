@@ -3,15 +3,18 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutDashboard, Code2, Sparkles } from 'lucide-react';
+import { Home, LayoutDashboard, Code2 } from 'lucide-react';
+import { useAuth } from '@/lib/AuthContext';
 
 export const MobileBottomNav: React.FC = () => {
   const pathname = usePathname();
+  const { currentDayNumber } = useAuth();
+  const activeDay = currentDayNumber > 0 ? currentDayNumber : 1;
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Day 12', path: '/day/12', icon: Code2 },
+    { name: `Day ${activeDay}`, path: `/day/${activeDay}`, icon: Code2 },
   ];
 
   return (
@@ -19,7 +22,7 @@ export const MobileBottomNav: React.FC = () => {
       <div className="max-w-md mx-auto flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
+          const isActive = item.path === '/' ? pathname === '/' : pathname.startsWith('/day') ? item.path.startsWith('/day') : pathname.startsWith(item.path);
 
           return (
             <Link

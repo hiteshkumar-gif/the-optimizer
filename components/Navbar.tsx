@@ -16,7 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenOnboarding,
 }) => {
   const pathname = usePathname();
-  const { user, userProfile, logout } = useAuth();
+  const { user, userProfile, currentDayNumber, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -124,15 +124,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Dashboard
               </Link>
               <Link
-                href="/day/12"
+                href={`/day/${currentDayNumber > 0 ? currentDayNumber : 1}`}
                 className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                  isActive('/day/12')
+                  isActive('/day')
                     ? 'bg-[#151A1F] text-[#F5F3EE] font-semibold border border-[#242A30]'
                     : 'text-[#9BA3AA] hover:text-[#F5F3EE] hover:bg-[#151A1F]'
                 }`}
               >
-                <Code2 className="w-3.5 h-3.5" />
-                Day 12 Workspace
+                <Code2 className="w-3.5 h-3.5 text-[#B8F2D0]" />
+                Day {currentDayNumber > 0 ? currentDayNumber : 1} Workspace
               </Link>
             </>
           )}
