@@ -47,18 +47,29 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
         <div className="text-xs font-mono font-bold text-[#9BA3AA] uppercase tracking-wider mb-2">
           Peer Standing Cohort
         </div>
-        {leaderboard.map((user) => {
+        {leaderboard.map((user, idx) => {
           const isMe = user.isCurrentUser;
+          const myRank = student.rank || 300;
+          
+          let displayRank = myRank;
+          let displayXp = student.xp || 0;
+          let displayStreak = student.currentStreak || 0;
+          
+          if (!isMe) {
+            // Peers placed above user on leaderboard
+            const offset = leaderboard.length - 1 - idx; // 2 for first, 1 for second
+            displayRank = Math.max(1, myRank - offset);
+            displayXp = (student.xp || 0) + offset * 50 + 50;
+            displayStreak = Math.max(0, (student.currentStreak || 0) + offset);
+          }
+
           const displayName = isMe ? student.name : user.name;
           const displayHandle = isMe ? student.handle : user.handle;
           const displayAvatar = isMe ? student.avatar : user.avatar;
-          const displayStreak = isMe ? student.currentStreak : user.streak;
-          const displayXp = isMe ? student.xp : user.xp;
-          const displayRank = isMe ? student.rank : user.rank;
 
           return (
             <div
-              key={user.rank}
+              key={idx}
               className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
                 isMe
                   ? 'bg-[#151A1F] border-[#B8F2D0]/50 shadow-sm'
@@ -66,7 +77,7 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className={`w-6 text-center font-mono font-bold text-xs ${isMe ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
+                <span className={`w-8 text-center font-mono font-bold text-xs ${isMe ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
                   #{displayRank}
                 </span>
 

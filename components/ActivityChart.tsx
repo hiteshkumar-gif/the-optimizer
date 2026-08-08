@@ -11,6 +11,8 @@ interface ActivityChartProps {
 export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
   const [activeHover, setActiveHover] = useState<StreakDay | null>(null);
 
+  const completedInWeek = week.filter((item) => String(item.status).toLowerCase() === 'completed').length;
+
   return (
     <div className="hardware-card p-5 sm:p-6">
       <div className="flex items-center justify-between mb-4">
@@ -19,7 +21,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
           WEEKLY ACTIVITY LEDGER
         </h3>
         <span className="text-[11px] text-[#B8F2D0] font-mono font-bold">
-          6/7 Tasks Shipped This Week
+          {completedInWeek}/7 Tasks Shipped This Week
         </span>
       </div>
 
