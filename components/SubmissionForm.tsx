@@ -24,7 +24,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
   initialLinkedinUrl,
   onSubmissionUpdate,
 }) => {
-  const { user, getDaySubmission, saveSubmission } = useAuth();
+  const { user, userProfile, getDaySubmission, saveSubmission } = useAuth();
 
   const [githubUrl, setGithubUrl] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
@@ -285,7 +285,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
         <p className="text-xs text-[#9BA3AA] italic">
           {isCompleted
             ? 'Your proof of work has been recorded to your local developer streak timeline!'
-            : 'Your submission is saved locally. Complete both proof links to finalize Day 12.'}
+            : `Your submission is saved locally. Complete both proof links to finalize Day ${dayId}.`}
         </p>
       </div>
 
@@ -308,7 +308,7 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
                     : 'bg-[#151A1F] text-[#9BA3AA] border border-[#242A30] cursor-not-allowed'
                 }`}
               >
-                <span>Submit Day 12 & Update Streak →</span>
+                <span>Submit Day {dayId} & Update Streak →</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -319,10 +319,10 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
               ✓
             </div>
             <h4 className="text-2xl font-black text-[#B8F2D0] tracking-tight font-mono">
-              DAY 12 SUBMITTED!
+              DAY {dayId} SUBMITTED!
             </h4>
             <p className="text-xs sm:text-sm text-[#9BA3AA] max-w-md mx-auto">
-              Outstanding work! Your proof of work is saved to localStorage. Your streak is now 12 days active.
+              Outstanding work! Your proof of work is recorded. Your streak is now {userProfile?.currentStreak || 1} day{(userProfile?.currentStreak || 1) === 1 ? '' : 's'} active.
             </p>
           </div>
         )}
