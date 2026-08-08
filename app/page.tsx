@@ -15,8 +15,14 @@ import { useAuth } from '@/lib/AuthContext';
 
 export default function LandingPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, userProfile, currentDayNumber, submissions } = useAuth();
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
+  const activeDayNum = userProfile ? currentDayNumber : 0;
+  const completedCount = Object.values(submissions || {}).filter(
+    (s) => s.status === 'completed' || (s.githubSubmitted && s.linkedinSubmitted)
+  ).length;
+  const totalCommits = completedCount * 10;
 
   const handleStartClick = (e: React.MouseEvent) => {
     if (!user) {
@@ -245,12 +251,14 @@ export default function LandingPage() {
               <div className="sm:w-1/2 sm:pl-8 hidden sm:block" />
             </div>
 
-            {/* Node 12 */}
+            {/* Node 12 / Active Day */}
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pl-14 sm:pl-0">
               <div className="sm:w-1/2 sm:pr-8 hidden sm:block" />
               <div className="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-5 h-5 rounded-full bg-[#B8F2D0] border-4 border-[#080A0C] animate-pulse" />
               <div className="sm:w-1/2 sm:pl-8 text-left">
-                <span className="text-xs font-mono font-bold text-[#B8F2D0] uppercase">DAY 12 (YOU ARE HERE)</span>
+                <span className="text-xs font-mono font-bold text-[#B8F2D0] uppercase">
+                  DAY {activeDayNum > 0 ? activeDayNum : 1} (YOU ARE HERE)
+                </span>
                 <h4 className="text-base font-bold text-[#F5F3EE]">BUILD MOMENTUM</h4>
                 <p className="text-xs text-[#9BA3AA]">Coding daily is now becoming a permanent muscle memory.</p>
               </div>
@@ -310,26 +318,29 @@ export default function LandingPage() {
         <div className="hardware-card p-6">
           <div className="flex items-center justify-between text-xs text-[#9BA3AA] mb-4 font-mono">
             <span>60 Days Activity Graph</span>
-            <span className="text-[#B8F2D0] font-bold">120 Total Commits</span>
+            <span className="text-[#B8F2D0] font-bold">{totalCommits} Total Commits</span>
           </div>
 
           <div className="grid grid-cols-12 gap-1.5 sm:gap-2">
             {[...Array(60)].map((_, i) => {
-              const isCompleted = i < 12;
-              const isToday = i === 11;
+              const dayNum = i + 1;
+              const sub = submissions[String(dayNum)];
+              const isCompleted = Boolean(sub?.status === 'completed' || (sub?.githubSubmitted && sub?.linkedinSubmitted));
+              const isToday = activeDayNum > 0 && dayNum === activeDayNum;
+
               return (
                 <div
                   key={i}
                   className={`h-6 sm:h-8 rounded transition-all flex items-center justify-center text-[10px] font-mono font-bold ${
-                    isToday
-                      ? 'bg-[#B8F2D0] text-[#080A0C] animate-pulse'
-                      : isCompleted
-                      ? 'bg-[#B8F2D0]/80 text-[#080A0C]'
+                    isCompleted
+                      ? 'bg-[#B8F2D0] text-[#080A0C]'
+                      : isToday
+                      ? 'bg-[#151A1F] border border-[#B8F2D0] text-[#B8F2D0] animate-pulse'
                       : 'bg-[#151A1F] border border-[#242A30] text-[#9BA3AA]/40'
                   }`}
-                  title={`Day ${i + 1}`}
+                  title={`Day ${dayNum}${isCompleted ? ' — Completed' : isToday ? ' — Today' : ' — Pending'}`}
                 >
-                  {i + 1}
+                  {dayNum}
                 </div>
               );
             })}
