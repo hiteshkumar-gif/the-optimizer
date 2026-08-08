@@ -8,7 +8,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { auth, googleProvider, db } from './firebase';
+import { auth, googleProvider, db, isFirebaseConfigured } from './firebase';
 import { Student, SubmissionData } from './types';
 
 interface AuthContextType {
@@ -49,7 +49,7 @@ const createNewUserProfile = (uid: string, name: string, email: string, avatar?:
     totalParticipants: 300,
     topPercentage: 'Top 100%',
     xp: 0,
-    currentStreak: 0, // INITIAL STREAK STARTS AT 0 DAYS FOR EVERY NEW ACCOUNT
+    currentStreak: 0, // INITIAL STREAK STARTS AT 0 DAYS FOR NEW ACCOUNTS
     bestStreak: 0,
     totalDays: 60,
     daysCompleted: 0,
@@ -68,77 +68,92 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [submissions, setSubmissions] = useState<Record<string, SubmissionData>>({});
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Sync user profile & submissions from Firestore (with per-user local store backup)
+  // Synchronize user data from local storage immediately, and from Firestore if configured
   const syncUserData = async (uid: string, name?: string | null, email?: string | null, avatar?: string | null): Promise<Student> => {
     let profile: Student | null = null;
     let userSubmissions: Record<string, SubmissionData> = {};
 
-    const profileDocRef = doc(db, 'users', uid);
-    const subDocRef = doc(db, 'submissions', uid);
+    const localProfileKey = `${USER_STORAGE_PREFIX}${uid}_profile`;
+    const localSubKey = `${USER_STORAGE_PREFIX}${uid}_submissions`;
 
-    try {
-      const snap = await getDoc(profileDocRef);
-      if (snap.exists()) {
-        profile = snap.data() as Student;
-        profile = {
-          ...profile,
-          uid,
-          name: name || profile.name,
-          email: email || profile.email,
-          avatar: avatar || profile.avatar,
-          lastActiveDate: new Date().toISOString(),
-        };
-      }
-    } catch (err) {
-      console.warn('Firestore read user failed, fallback to local storage:', err);
-    }
-
-    if (!profile) {
-      const localKey = `${USER_STORAGE_PREFIX}${uid}_profile`;
-      const localRaw = typeof window !== 'undefined' ? localStorage.getItem(localKey) : null;
-      if (localRaw) {
+    // 1. Instantly read local storage per-user backup
+    if (typeof window !== 'undefined') {
+      const rawP = localStorage.getItem(localProfileKey);
+      if (rawP) {
         try {
-          profile = JSON.parse(localRaw) as Student;
+          profile = JSON.parse(rawP) as Student;
         } catch (e) {
           console.error('Error parsing local profile backup:', e);
         }
       }
-    }
-
-    if (!profile) {
-      // First time login for this account! Create 0-day initial streak profile
-      profile = createNewUserProfile(uid, name || 'Developer', email || '', avatar || undefined);
-    }
-
-    try {
-      await setDoc(profileDocRef, profile, { merge: true });
-    } catch (err) {
-      console.warn('Firestore write user warning:', err);
-    }
-
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(`${USER_STORAGE_PREFIX}${uid}_profile`, JSON.stringify(profile));
-      localStorage.setItem(ACTIVE_SESSION_KEY, uid);
-    }
-
-    try {
-      const subSnap = await getDoc(subDocRef);
-      if (subSnap.exists()) {
-        userSubmissions = subSnap.data() as Record<string, SubmissionData>;
-      }
-    } catch (err) {
-      console.warn('Firestore read submissions failed:', err);
-    }
-
-    if (Object.keys(userSubmissions).length === 0 && typeof window !== 'undefined') {
-      const subKey = `${USER_STORAGE_PREFIX}${uid}_submissions`;
-      const subRaw = localStorage.getItem(subKey);
-      if (subRaw) {
+      const rawS = localStorage.getItem(localSubKey);
+      if (rawS) {
         try {
-          userSubmissions = JSON.parse(subRaw);
+          userSubmissions = JSON.parse(rawS);
         } catch (e) {
           console.error('Error parsing local submissions backup:', e);
         }
+      }
+    }
+
+    // 2. Read from Firestore ONLY if valid Firebase API key is configured
+    if (isFirebaseConfigured()) {
+      try {
+        const snap = await getDoc(doc(db, 'users', uid));
+        if (snap.exists()) {
+          const remoteProfile = snap.data() as Student;
+          profile = {
+            ...remoteProfile,
+            uid,
+            name: name || remoteProfile.name,
+            email: email || remoteProfile.email,
+            avatar: avatar || remoteProfile.avatar,
+            lastActiveDate: new Date().toISOString(),
+          };
+        }
+      } catch (err) {
+        console.warn('Firestore user fetch skipped/failed:', err);
+      }
+    }
+
+    // 3. If profile doesn't exist yet, create 0-day initial streak profile
+    if (!profile) {
+      profile = createNewUserProfile(uid, name || 'Developer', email || '', avatar || undefined);
+    } else {
+      profile = {
+        ...profile,
+        uid,
+        name: name || profile.name,
+        email: email || profile.email,
+        avatar: avatar || profile.avatar,
+        lastActiveDate: new Date().toISOString(),
+      };
+    }
+
+    // 4. Save to local storage & Firestore (non-blocking)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(localProfileKey, JSON.stringify(profile));
+      localStorage.setItem(ACTIVE_SESSION_KEY, uid);
+    }
+
+    if (isFirebaseConfigured()) {
+      setDoc(doc(db, 'users', uid), profile, { merge: true }).catch((err) => {
+        console.warn('Firestore async user write warning:', err);
+      });
+    }
+
+    // 5. Read Firestore submissions if configured and missing locally
+    if (isFirebaseConfigured() && Object.keys(userSubmissions).length === 0) {
+      try {
+        const subSnap = await getDoc(doc(db, 'submissions', uid));
+        if (subSnap.exists()) {
+          userSubmissions = subSnap.data() as Record<string, SubmissionData>;
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(localSubKey, JSON.stringify(userSubmissions));
+          }
+        }
+      } catch (err) {
+        console.warn('Firestore submissions fetch warning:', err);
       }
     }
 
@@ -148,20 +163,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        await syncUserData(currentUser.uid, currentUser.displayName, currentUser.email, currentUser.photoURL);
-        setLoading(false);
-      } else {
-        // Check if there is an active local custom Google session
+    let isSubscribed = true;
+
+    const restoreSession = async () => {
+      try {
         const activeUid = typeof window !== 'undefined' ? localStorage.getItem(ACTIVE_SESSION_KEY) : null;
-        if (activeUid && activeUid.startsWith('google_id_')) {
+        if (activeUid) {
           const profileKey = `${USER_STORAGE_PREFIX}${activeUid}_profile`;
-          const savedRaw = localStorage.getItem(profileKey);
+          const subKey = `${USER_STORAGE_PREFIX}${activeUid}_submissions`;
+          const savedRaw = typeof window !== 'undefined' ? localStorage.getItem(profileKey) : null;
           if (savedRaw) {
-            try {
-              const savedProfile = JSON.parse(savedRaw) as Student;
+            const savedProfile = JSON.parse(savedRaw) as Student;
+            if (isSubscribed) {
               setUser({
                 uid: savedProfile.uid || activeUid,
                 displayName: savedProfile.name,
@@ -169,25 +182,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 photoURL: savedProfile.avatar,
               });
               setUserProfile(savedProfile);
-              const subRaw = localStorage.getItem(`${USER_STORAGE_PREFIX}${activeUid}_submissions`);
+              const subRaw = typeof window !== 'undefined' ? localStorage.getItem(subKey) : null;
               if (subRaw) {
                 setSubmissions(JSON.parse(subRaw));
               }
-            } catch (e) {
-              console.error('Error loading session:', e);
             }
           }
         }
-        setLoading(false);
+      } catch (err) {
+        console.error('Session restore error:', err);
+      } finally {
+        if (isSubscribed) {
+          setLoading(false);
+        }
       }
-    });
+    };
 
-    return () => unsubscribe();
+    restoreSession();
+
+    // Attach Firebase listener if Firebase is configured
+    let unsubscribe: () => void = () => {};
+    if (isFirebaseConfigured()) {
+      unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        if (!isSubscribed) return;
+        if (currentUser) {
+          setUser(currentUser);
+          await syncUserData(currentUser.uid, currentUser.displayName, currentUser.email, currentUser.photoURL);
+        }
+        if (isSubscribed) {
+          setLoading(false);
+        }
+      });
+    }
+
+    return () => {
+      isSubscribed = false;
+      unsubscribe();
+    };
   }, []);
 
   const loginWithGoogle = async (): Promise<Student> => {
     setLoading(true);
     try {
+      if (!isFirebaseConfigured()) {
+        throw new Error('Firebase API key is not configured.');
+      }
       const result = await signInWithPopup(auth, googleProvider);
       setUser(result.user);
       const profile = await syncUserData(
@@ -196,39 +235,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         result.user.email,
         result.user.photoURL
       );
-      setLoading(false);
       return profile;
-    } catch (error) {
+    } finally {
       setLoading(false);
-      console.error('Google Sign-In Error:', error);
-      throw error;
     }
   };
 
   const loginWithCustomGoogleIdentity = async (name: string, email: string): Promise<Student> => {
     setLoading(true);
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanName = name.trim();
-    // Unique UID based on email hash/btoa
-    const uid = `google_id_${typeof window !== 'undefined' ? btoa(cleanEmail).replace(/=/g, '') : cleanEmail}`;
+    try {
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanName = name.trim();
+      const uid = `google_id_${typeof window !== 'undefined' ? btoa(cleanEmail).replace(/=/g, '') : cleanEmail}`;
 
-    const customUser = {
-      uid,
-      displayName: cleanName,
-      email: cleanEmail,
-      photoURL: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80`,
-    };
+      const customUser = {
+        uid,
+        displayName: cleanName,
+        email: cleanEmail,
+        photoURL: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80`,
+      };
 
-    setUser(customUser);
-    const profile = await syncUserData(uid, cleanName, cleanEmail);
-    setLoading(false);
-    return profile;
+      setUser(customUser);
+      const profile = await syncUserData(uid, cleanName, cleanEmail);
+      return profile;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
     setLoading(true);
     try {
-      await firebaseSignOut(auth);
+      if (isFirebaseConfigured()) {
+        await firebaseSignOut(auth);
+      }
     } catch (err) {
       console.warn('Firebase signout warning:', err);
     } finally {
@@ -262,14 +302,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setUserProfile(updated);
 
-    try {
-      await setDoc(doc(db, 'users', user.uid), updated, { merge: true });
-    } catch (err) {
-      console.warn('Firestore update profile warning:', err);
-    }
-
     if (typeof window !== 'undefined') {
       localStorage.setItem(`${USER_STORAGE_PREFIX}${user.uid}_profile`, JSON.stringify(updated));
+    }
+
+    if (isFirebaseConfigured()) {
+      setDoc(doc(db, 'users', user.uid), updated, { merge: true }).catch((err) => {
+        console.warn('Firestore profile update warning:', err);
+      });
     }
 
     return updated;
@@ -304,14 +344,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setSubmissions(updatedSubmissions);
 
-    try {
-      await setDoc(doc(db, 'submissions', user.uid), updatedSubmissions, { merge: true });
-    } catch (err) {
-      console.warn('Firestore save submission warning:', err);
-    }
-
     if (typeof window !== 'undefined') {
       localStorage.setItem(`${USER_STORAGE_PREFIX}${user.uid}_submissions`, JSON.stringify(updatedSubmissions));
+    }
+
+    if (isFirebaseConfigured()) {
+      setDoc(doc(db, 'submissions', user.uid), updatedSubmissions, { merge: true }).catch((err) => {
+        console.warn('Firestore submission save warning:', err);
+      });
     }
 
     if (updatedDay.status === 'completed' || (updatedDay.githubSubmitted && updatedDay.linkedinSubmitted)) {
