@@ -1,19 +1,19 @@
 'use client';
 
 import React from 'react';
-import { Check, ShieldAlert, ShieldCheck, Sparkles } from 'lucide-react';
-import { Student, StreakDay } from '@/lib/types';
+import { Check, ShieldAlert, ShieldCheck, Sparkles, Lock, X } from 'lucide-react';
+import { Student, CalendarDayItem, StreakDay } from '@/lib/types';
 
 interface StreakCardProps {
   student: Student;
-  weekStreak: StreakDay[];
+  weekStreak?: (CalendarDayItem | StreakDay)[];
   onOpenShield: () => void;
   isShieldProtected?: boolean;
 }
 
 export const StreakCard: React.FC<StreakCardProps> = ({
   student,
-  weekStreak,
+  weekStreak = [],
   onOpenShield,
   isShieldProtected = false,
 }) => {
@@ -95,27 +95,42 @@ export const StreakCard: React.FC<StreakCardProps> = ({
         </div>
       </div>
 
-      {/* Mon-Sun Day Status Grid */}
+      {/* Real Calendar Week Grid */}
       <div className="mb-4">
         <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
-          {weekStreak.map((item) => {
-            const isCompleted = item.status === 'completed';
-            const isToday = item.status === 'today';
+          {weekStreak.map((item, idx) => {
+            const rawStatus = 'status' in item ? item.status : 'UPCOMING';
+            const statusUpper = String(rawStatus).toUpperCase();
+
+            const isCompleted = statusUpper === 'COMPLETED';
+            const isToday = statusUpper === 'TODAY';
+            const isUpcoming = statusUpper === 'UPCOMING';
+            const isMissed = statusUpper === 'MISSED';
+
+            const labelName = 'dayName' in item ? item.dayName : item.day;
+            const labelDate = 'shortDate' in item ? item.shortDate : '';
 
             return (
               <div
-                key={item.day}
+                key={idx}
                 className={`flex flex-col items-center p-2 rounded-xl border text-center transition-all ${
                   isToday
                     ? 'bg-[#151A1F] border-[#B8F2D0]/60 text-[#F5F3EE] shadow-sm'
                     : isCompleted
                     ? 'bg-[#101418] border-[#B8F2D0]/30 text-[#B8F2D0]'
+                    : isMissed
+                    ? 'bg-[#101418] border-red-900/40 text-red-400'
                     : 'bg-[#080A0C] border-[#242A30] text-[#9BA3AA]/60'
                 }`}
               >
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider mb-1">
-                  {item.day}
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider mb-0.5">
+                  {labelName}
                 </span>
+                {labelDate && (
+                  <span className="text-[9px] font-mono text-[#9BA3AA] block mb-1">
+                    {labelDate}
+                  </span>
+                )}
 
                 <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs font-bold">
                   {isCompleted ? (
@@ -125,6 +140,14 @@ export const StreakCard: React.FC<StreakCardProps> = ({
                   ) : isToday ? (
                     <div className="w-5 h-5 rounded-full bg-[#B8F2D0] flex items-center justify-center text-[#080A0C] font-black animate-pulse">
                       ?
+                    </div>
+                  ) : isUpcoming ? (
+                    <div className="w-5 h-5 rounded-full bg-[#151A1F] border border-[#242A30] flex items-center justify-center text-[#9BA3AA]/60">
+                      <Lock className="w-3 h-3 text-[#9BA3AA]/50" />
+                    </div>
+                  ) : isMissed ? (
+                    <div className="w-5 h-5 rounded-full bg-red-950/40 border border-red-800/40 flex items-center justify-center text-red-400">
+                      <X className="w-3 h-3" />
                     </div>
                   ) : (
                     <span className="w-2 h-2 rounded-full bg-[#242A30]" />

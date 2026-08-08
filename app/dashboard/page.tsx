@@ -10,13 +10,14 @@ import { LeaderboardCard } from '@/components/LeaderboardCard';
 import { ActivityChart } from '@/components/ActivityChart';
 import { StreakShieldModal } from '@/components/StreakShieldModal';
 import { DemoLoginModal } from '@/components/DemoLoginModal';
+import { OnboardingCard } from '@/components/OnboardingCard';
 import { EdgeCaseSwitcher, EdgeCaseMode } from '@/components/EdgeCaseSwitcher';
 import { AlertCircle, Sparkles, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
-import { Student, StreakDay } from '@/lib/types';
+import { Student } from '@/lib/types';
 
 export default function DashboardPage() {
-  const { user, userProfile, loading } = useAuth();
+  const { user, userProfile, loading, currentDayNumber, calendarWeek, todayChallenge, submissions } = useAuth();
   const [edgeMode, setEdgeMode] = useState<EdgeCaseMode>('normal');
   const [isShieldOpen, setIsShieldOpen] = useState(false);
   const [isShieldProtected, setIsShieldProtected] = useState(false);
@@ -30,7 +31,7 @@ export default function DashboardPage() {
 
   const mockData = getMockData();
 
-  // Determine actual active student object based on authenticated profile or edgeMode inspector
+  // Active student object computed from Single Source of Truth AuthContext or edgeMode switcher
   const getActiveStudent = (): Student => {
     if (edgeMode === 'new') {
       return {
@@ -43,6 +44,7 @@ export default function DashboardPage() {
         xp: 0,
         rank: 300,
         topPercentage: 'Top 100%',
+        currentDay: 0,
       };
     }
     if (edgeMode === 'missed') {
@@ -68,6 +70,7 @@ export default function DashboardPage() {
         daysCompleted: 0,
         daysRemaining: 60,
         completionPercentage: 0,
+        currentDay: 0,
       };
     }
     if (userProfile) {
@@ -77,22 +80,12 @@ export default function DashboardPage() {
   };
 
   const student = getActiveStudent();
-  const todayTask = mockData.days['12'];
+  const displayDayNumber = edgeMode === 'normal' ? currentDayNumber : (student.currentDay || 0);
 
-  // Dynamically compute week streak grid status based on student streak
-  const dynamicWeekStreak: StreakDay[] = mockData.streak.week.map((item, idx) => {
-    if (student.currentStreak === 0) {
-      return { ...item, status: idx === 6 ? 'today' : 'pending' };
-    }
-    if (student.currentStreak >= 12) {
-      return { ...item, status: idx === 6 ? 'today' : 'completed' };
-    }
-    const daysCompletedInWeek = Math.min(student.currentStreak, 6);
-    if (idx < daysCompletedInWeek) {
-      return { ...item, status: 'completed' };
-    }
-    return { ...item, status: idx === 6 ? 'today' : 'pending' };
-  });
+  const isTodayCompleted = Boolean(
+    submissions[String(displayDayNumber)]?.status === 'completed' ||
+    (submissions[String(displayDayNumber)]?.githubSubmitted && submissions[String(displayDayNumber)]?.linkedinSubmitted)
+  );
 
   const firstName = student.name ? student.name.split(' ')[0] : 'Developer';
 
@@ -117,7 +110,9 @@ export default function DashboardPage() {
               Good morning, {firstName} 👋
             </h1>
             <p className="text-xs sm:text-sm text-[#9BA3AA] font-normal mt-1">
-              Day {student.daysCompleted > 0 ? student.daysCompleted : 1} of your 60-day developer trajectory
+              {displayDayNumber === 0
+                ? 'Day 0: Profile Setup & Onboarding Protocol'
+                : `Day ${displayDayNumber} of your 60-day developer trajectory`}
             </p>
           </div>
 
@@ -128,15 +123,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* First Login 0-Day Banner for New Users */}
-        {student.currentStreak === 0 && edgeMode === 'normal' && (
-          <div className="p-4 rounded-xl bg-[#101418] border border-[#D8C7A1]/40 text-[#D8C7A1] text-xs flex items-center gap-3 font-mono">
-            <AlertCircle className="w-5 h-5 shrink-0 text-[#D8C7A1]" />
-            <div>
-              <strong className="block font-bold text-[#F5F3EE]">0 DAY STREAK INITIALIZED</strong>
-              Welcome! Your Google user account is connected. Submit your first activity on Day 12 to start your streak.
-            </div>
-          </div>
+        {/* DAY 0 ONBOARDING CARD FOR NEW USERS */}
+        {displayDayNumber === 0 && edgeMode === 'normal' && (
+          <OnboardingCard />
         )}
 
         {/* Edge Case Banners if active */}
@@ -144,8 +133,8 @@ export default function DashboardPage() {
           <div className="p-4 rounded-xl bg-[#101418] border border-[#D8C7A1]/40 text-[#D8C7A1] text-xs flex items-center gap-3 font-mono">
             <AlertCircle className="w-5 h-5 shrink-0 text-[#D8C7A1]" />
             <div>
-              <strong className="block font-bold text-[#F5F3EE]">0 DAY STREAK (INSPECTOR PREVIEW)</strong>
-              Previewing 0-day initial streak state without modifying your database record.
+              <strong className="block font-bold text-[#F5F3EE]">DAY 0 ONBOARDING (INSPECTOR PREVIEW)</strong>
+              Previewing 0-day initial state without modifying your database record.
             </div>
           </div>
         )}
@@ -175,16 +164,16 @@ export default function DashboardPage() {
             {/* STREAK HERO CARD */}
             <StreakCard
               student={student}
-              weekStreak={dynamicWeekStreak}
+              weekStreak={calendarWeek}
               onOpenShield={() => setIsShieldOpen(true)}
               isShieldProtected={isShieldProtected}
             />
 
             {/* TODAY'S TASK CARD */}
-            <TaskCard task={todayTask} isCompleted={(student.daysCompleted ?? 0) >= 12} />
+            <TaskCard task={todayChallenge} isCompleted={isTodayCompleted} />
 
             {/* WEEKLY ACTIVITY CHART */}
-            <ActivityChart week={dynamicWeekStreak} />
+            <ActivityChart week={calendarWeek as any} />
           </div>
 
           {/* Right Column (Overall Progress, Standing, Achievements) */}

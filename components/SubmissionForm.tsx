@@ -155,15 +155,19 @@ export const SubmissionForm: React.FC<SubmissionFormProps> = ({
     <div className="space-y-6">
       {/* Proof Submission Dual Cards Header */}
       <div className="hardware-card p-5 sm:p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <h3 className="text-base sm:text-lg font-bold text-[#F5F3EE] tracking-tight flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-[#B8F2D0]" />
-            Submit Your Proof
+            Submit Your Proof of Work
           </h3>
           <span className="text-xs text-[#D8C7A1] font-mono">
             Required: GitHub + LinkedIn
           </span>
         </div>
+
+        <p className="text-xs text-[#9BA3AA] mb-4 leading-relaxed">
+          Submit your public GitHub repository URL and LinkedIn proof-of-work post to verify Day {dayId} completion and update your daily streak in your database record.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* GitHub Submission Input Card */}

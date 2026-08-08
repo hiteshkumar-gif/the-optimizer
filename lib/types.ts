@@ -10,6 +10,7 @@ export interface Student {
   xp: number;
   currentStreak: number;
   bestStreak: number;
+  longestStreak?: number;
   totalDays: number;
   daysCompleted: number;
   daysRemaining: number;
@@ -17,8 +18,24 @@ export interface Student {
   streakProtected?: boolean;
   track?: string;
   createdAt?: string;
+  programStartDate?: string;
+  currentDay?: number;
+  githubHandle?: string;
+  linkedinUrl?: string;
   lastActiveDate?: string;
   lastSubmissionDate?: string;
+}
+
+export type ChallengeDayStatus = 'COMPLETED' | 'TODAY' | 'UPCOMING' | 'MISSED';
+
+export interface CalendarDayItem {
+  dayName: string;
+  shortDate: string;
+  fullDate: string;
+  dayNumber: number;
+  status: ChallengeDayStatus;
+  isFuture: boolean;
+  isToday: boolean;
 }
 
 export interface StreakDay {
@@ -67,6 +84,11 @@ export interface DayTask {
 }
 
 export interface SubmissionData {
+  userId?: string;
+  challengeId?: string | number;
+  dayNumber?: number;
+  challengeDate?: string;
+  completedAt?: string;
   githubUrl: string;
   linkedinUrl: string;
   githubSubmitted: boolean;

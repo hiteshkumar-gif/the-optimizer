@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { getDayTask } from '@/lib/data';
+import { getChallengeByDay } from '@/lib/challengesData';
 import { SubmissionForm } from '@/components/SubmissionForm';
 import { DemoLoginModal } from '@/components/DemoLoginModal';
 import { useAuth } from '@/lib/AuthContext';
@@ -22,8 +22,8 @@ import {
 export default function DayWorkspacePage() {
   const params = useParams();
   const dayId = params?.id ? String(params.id) : '12';
-  const task = getDayTask(dayId);
-  const { user, loading, getDaySubmission } = useAuth();
+  const task = getChallengeByDay(dayId);
+  const { user, userProfile, loading, getDaySubmission } = useAuth();
   const initialSub = getDaySubmission(dayId);
 
   const [openAccordion, setOpenAccordion] = useState<string | null>('mission');
