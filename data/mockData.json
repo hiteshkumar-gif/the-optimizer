@@ -13,16 +13,17 @@
     "daysCompleted": 12,
     "daysRemaining": 48,
     "completionPercentage": 20,
-    "streakProtected": false
+    "streakProtected": false,
+    "currentDay": 12
   },
   "streak": {
     "week": [
-      { "day": "Mon", "shortDate": "Aug 1", "status": "completed" },
-      { "day": "Tue", "shortDate": "Aug 2", "status": "completed" },
-      { "day": "Wed", "shortDate": "Aug 3", "status": "completed" },
-      { "day": "Thu", "shortDate": "Aug 4", "status": "completed" },
-      { "day": "Fri", "shortDate": "Aug 5", "status": "completed" },
-      { "day": "Sat", "shortDate": "Aug 6", "status": "completed" },
+      { "day": "Mon", "shortDate": "Aug 3", "status": "completed" },
+      { "day": "Tue", "shortDate": "Aug 4", "status": "completed" },
+      { "day": "Wed", "shortDate": "Aug 5", "status": "completed" },
+      { "day": "Thu", "shortDate": "Aug 6", "status": "completed" },
+      { "day": "Fri", "shortDate": "Aug 7", "status": "completed" },
+      { "day": "Sat", "shortDate": "Aug 8", "status": "completed" },
       { "day": "Sun", "shortDate": "Today", "status": "today" }
     ]
   },
@@ -132,12 +133,23 @@
     }
   },
   "submissions": {
+    "1": { "githubUrl": "https://github.com/student_dev/day1-git-workflow", "linkedinUrl": "https://linkedin.com/posts/day1-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "2": { "githubUrl": "https://github.com/student_dev/day2-html-accessibility", "linkedinUrl": "https://linkedin.com/posts/day2-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "3": { "githubUrl": "https://github.com/student_dev/day3-css-grid", "linkedinUrl": "https://linkedin.com/posts/day3-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "4": { "githubUrl": "https://github.com/student_dev/day4-dom-events", "linkedinUrl": "https://linkedin.com/posts/day4-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "5": { "githubUrl": "https://github.com/student_dev/day5-async-fetch", "linkedinUrl": "https://linkedin.com/posts/day5-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "6": { "githubUrl": "https://github.com/student_dev/day6-state-management", "linkedinUrl": "https://linkedin.com/posts/day6-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "7": { "githubUrl": "https://github.com/student_dev/day7-react-hooks", "linkedinUrl": "https://linkedin.com/posts/day7-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "8": { "githubUrl": "https://github.com/student_dev/day8-tailwind-ui", "linkedinUrl": "https://linkedin.com/posts/day8-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "9": { "githubUrl": "https://github.com/student_dev/day9-form-validation", "linkedinUrl": "https://linkedin.com/posts/day9-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "10": { "githubUrl": "https://github.com/student_dev/day10-nextjs-routing", "linkedinUrl": "https://linkedin.com/posts/day10-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
+    "11": { "githubUrl": "https://github.com/student_dev/day11-api-integration", "linkedinUrl": "https://linkedin.com/posts/day11-proof", "githubSubmitted": true, "linkedinSubmitted": true, "status": "completed" },
     "12": {
       "githubUrl": "https://github.com/hiteshkumar/day12-responsive-portfolio",
       "linkedinUrl": "https://linkedin.com/posts/hiteshkumar-day12-challenge",
       "githubSubmitted": true,
       "linkedinSubmitted": true,
-      "status": "pending_review"
+      "status": "completed"
     }
   },
   "streakShieldTask": {

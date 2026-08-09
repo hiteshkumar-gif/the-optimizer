@@ -12,6 +12,15 @@ export interface DemoStudentProfile extends Student {
   lastActiveDate: string;
 }
 
+export const getDefaultProgramStartDate = (currentDay = 12): string => {
+  const d = new Date();
+  d.setDate(d.getDate() - (currentDay - 1));
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const getDefaultStudentProfile = (): DemoStudentProfile => {
   const base = mockDataRaw.student as Student;
   return {
@@ -21,6 +30,7 @@ export const getDefaultStudentProfile = (): DemoStudentProfile => {
     track: 'Fullstack Web Development',
     createdAt: new Date().toISOString(),
     lastActiveDate: new Date().toISOString(),
+    programStartDate: getDefaultProgramStartDate(12),
   };
 };
 

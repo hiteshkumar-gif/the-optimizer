@@ -27,13 +27,16 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
 
       {/* 7 Day Visual Pillar Grid */}
       <div className="grid grid-cols-7 gap-2 bg-[#151A1F] p-4 rounded-xl border border-[#242A30] mb-3">
-        {week.map((item) => {
-          const isDone = item.status === 'completed';
-          const isToday = item.status === 'today';
+        {week.map((item, idx) => {
+          const statusLower = String(item.status || '').toLowerCase();
+          const isDone = statusLower === 'completed';
+          const isToday = statusLower === 'today';
+
+          const labelDay = 'dayName' in item ? (item as any).dayName : item.day;
 
           return (
             <div
-              key={item.day}
+              key={labelDay || idx}
               onMouseEnter={() => setActiveHover(item)}
               onMouseLeave={() => setActiveHover(null)}
               className="flex flex-col items-center gap-2 group cursor-pointer"
@@ -53,7 +56,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
 
               {/* Day Label */}
               <span className="text-[10px] font-mono font-bold text-[#9BA3AA] uppercase tracking-wider group-hover:text-[#F5F3EE] transition-colors">
-                {item.day}
+                {labelDay}
               </span>
             </div>
           );
@@ -66,7 +69,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ week }) => {
           <>
             <span className="flex items-center gap-1.5 text-[#F5F3EE]">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#B8F2D0]" />
-              <strong>{activeHover.day} ({activeHover.shortDate})</strong>: {activeHover.status === 'completed' ? 'Coding Challenge Completed + GitHub Proof Verified' : 'Today\'s Task Pending'}
+              <strong>{'dayName' in activeHover ? (activeHover as any).dayName : activeHover.day} ({activeHover.shortDate})</strong>: {String(activeHover.status).toLowerCase() === 'completed' ? 'Coding Challenge Completed + GitHub Proof Verified' : 'Today\'s Task Pending'}
             </span>
             <span className="text-[#B8F2D0] font-bold">+100 XP</span>
           </>

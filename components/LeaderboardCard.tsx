@@ -49,19 +49,9 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
         </div>
         {leaderboard.map((user, idx) => {
           const isMe = user.isCurrentUser;
-          const myRank = student.rank || 300;
-          
-          let displayRank = myRank;
-          let displayXp = student.xp || 0;
-          let displayStreak = student.currentStreak || 0;
-          
-          if (!isMe) {
-            // Peers placed above user on leaderboard
-            const offset = leaderboard.length - 1 - idx; // 2 for first, 1 for second
-            displayRank = Math.max(1, myRank - offset);
-            displayXp = (student.xp || 0) + offset * 50 + 50;
-            displayStreak = Math.max(0, (student.currentStreak || 0) + offset);
-          }
+          const displayRank = isMe ? (student.rank || 24) : user.rank;
+          const displayXp = isMe ? (student.xp || 1240) : user.xp;
+          const displayStreak = isMe ? (student.currentStreak || 12) : user.streak;
 
           const displayName = isMe ? student.name : user.name;
           const displayHandle = isMe ? student.handle : user.handle;
@@ -76,31 +66,31 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ student, leade
                   : 'bg-[#080A0C] border-[#242A30] hover:bg-[#101418]'
               }`}
             >
-              <div className="flex items-center gap-3">
-                <span className={`w-8 text-center font-mono font-bold text-xs ${isMe ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
+              <div className="flex items-center gap-3 min-w-0">
+                <span className={`w-8 shrink-0 text-center font-mono font-bold text-xs ${isMe ? 'text-[#B8F2D0]' : 'text-[#9BA3AA]'}`}>
                   #{displayRank}
                 </span>
 
                 {/* Avatar */}
-                <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#242A30]">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#242A30] shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={displayAvatar} alt={displayName} className="w-full h-full object-cover" />
                 </div>
 
-                <div>
-                  <div className="text-xs font-bold text-[#F5F3EE] flex items-center gap-1.5">
-                    <span>{displayName}</span>
+                <div className="min-w-0 truncate">
+                  <div className="text-xs font-bold text-[#F5F3EE] flex items-center gap-1.5 truncate">
+                    <span className="truncate">{displayName}</span>
                     {isMe && (
-                      <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.2 rounded bg-[#B8F2D0] text-[#080A0C]">
+                      <span className="text-[9px] uppercase font-mono font-bold px-1.5 py-0.2 rounded bg-[#B8F2D0] text-[#080A0C] shrink-0">
                         YOU
                       </span>
                     )}
                   </div>
-                  <div className="text-[10px] text-[#9BA3AA] font-mono">{displayHandle}</div>
+                  <div className="text-[10px] text-[#9BA3AA] font-mono truncate">{displayHandle}</div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 text-xs">
+              <div className="flex items-center gap-3 text-xs shrink-0 pl-2">
                 <span className="flex items-center gap-1 text-[#B8F2D0] font-mono font-medium">
                   <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
                   {displayStreak}d

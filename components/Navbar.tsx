@@ -160,10 +160,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Streak Counter Badge */}
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101418] border border-[#B8F2D0]/30 text-[#B8F2D0] text-xs font-mono font-bold hover:border-[#B8F2D0]/60 transition-all hover:scale-105"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#101418] border border-[#B8F2D0]/30 text-[#B8F2D0] text-xs font-mono font-bold hover:border-[#B8F2D0]/60 transition-all hover:scale-105"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0]" />
-                <span>{displayStreak} DAY STREAK</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#B8F2D0] shrink-0" />
+                <span className="hidden sm:inline">{displayStreak} DAY STREAK</span>
+                <span className="sm:hidden">{displayStreak}d ⚡</span>
               </Link>
 
               {/* Profile Dropdown Trigger */}

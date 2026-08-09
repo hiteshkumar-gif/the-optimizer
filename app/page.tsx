@@ -96,29 +96,29 @@ export default function LandingPage() {
             <span className="text-[#B8F2D0]">60 DAYS • PUBLIC PROOF</span>
           </div>
 
-          <div className="grid grid-cols-4 gap-2 sm:gap-4 relative z-10">
-            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center">
-              <span className="text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-1">Day 01</span>
-              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">START</span>
-              <span className="text-[10px] text-[#B8F2D0] font-mono">Commit ✓</span>
+          <div className="grid grid-cols-4 gap-1.5 sm:gap-4 relative z-10">
+            <div className="p-2 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center">
+              <span className="text-[9px] sm:text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-0.5">Day 01</span>
+              <span className="text-xs sm:text-xl font-black text-[#F5F3EE] block font-mono">START</span>
+              <span className="text-[9px] sm:text-[10px] text-[#B8F2D0] font-mono block truncate">Commit ✓</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#B8F2D0]/50 text-center shadow-sm">
-              <span className="text-[11px] uppercase font-mono font-bold text-[#B8F2D0] block mb-1">Day 12</span>
-              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">ACTIVE</span>
-              <span className="text-[10px] text-[#B8F2D0] font-mono font-bold">12d Streak ⚡</span>
+            <div className="p-2 sm:p-4 rounded-xl bg-[#151A1F] border border-[#B8F2D0]/50 text-center shadow-sm">
+              <span className="text-[9px] sm:text-[11px] uppercase font-mono font-bold text-[#B8F2D0] block mb-0.5">Day 12</span>
+              <span className="text-xs sm:text-xl font-black text-[#F5F3EE] block font-mono">ACTIVE</span>
+              <span className="text-[9px] sm:text-[10px] text-[#B8F2D0] font-mono font-bold block truncate">12d Streak ⚡</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#D8C7A1]/30 text-center">
-              <span className="text-[11px] uppercase font-mono font-bold text-[#D8C7A1] block mb-1">Day 30</span>
-              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">HALFWAY</span>
-              <span className="text-[10px] text-[#D8C7A1] font-mono">Milestone 🚀</span>
+            <div className="p-2 sm:p-4 rounded-xl bg-[#151A1F] border border-[#D8C7A1]/30 text-center">
+              <span className="text-[9px] sm:text-[11px] uppercase font-mono font-bold text-[#D8C7A1] block mb-0.5">Day 30</span>
+              <span className="text-xs sm:text-xl font-black text-[#F5F3EE] block font-mono">HALFWAY</span>
+              <span className="text-[9px] sm:text-[10px] text-[#D8C7A1] font-mono block truncate">30 Days 🚀</span>
             </div>
 
-            <div className="p-3 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center opacity-70">
-              <span className="text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-1">Day 60</span>
-              <span className="text-base sm:text-xl font-black text-[#F5F3EE] block font-mono">FINISH</span>
-              <span className="text-[10px] text-[#9BA3AA] font-mono">Mastery 🏆</span>
+            <div className="p-2 sm:p-4 rounded-xl bg-[#151A1F] border border-[#242A30] text-center opacity-70">
+              <span className="text-[9px] sm:text-[11px] uppercase font-mono font-bold text-[#9BA3AA] block mb-0.5">Day 60</span>
+              <span className="text-xs sm:text-xl font-black text-[#F5F3EE] block font-mono">FINISH</span>
+              <span className="text-[9px] sm:text-[10px] text-[#9BA3AA] font-mono block truncate">Mastery 🏆</span>
             </div>
           </div>
         </div>

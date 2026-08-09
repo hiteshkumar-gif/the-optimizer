@@ -60,7 +60,9 @@ export const parseLocalDate = (dateStr: string): Date => {
 };
 
 export const calculateCurrentDayNumber = (userProfile: Student | null): number => {
-  if (!userProfile || !userProfile.programStartDate) return 0;
+  if (!userProfile) return 12;
+  if (userProfile.currentDay === 0) return 0;
+  if (!userProfile.programStartDate) return userProfile.currentDay || 12;
 
   const startDateStr = userProfile.programStartDate;
   const todayStr = getTodayLocalDateString();
@@ -129,7 +131,18 @@ export const getCalendarWeekItems = (
 ): CalendarDayItem[] => {
   const todayStr = getTodayLocalDateString();
   const todayDate = parseLocalDate(todayStr);
-  const startDateStr = userProfile?.programStartDate;
+  const currentDayNum = calculateCurrentDayNumber(userProfile);
+
+  // Compute a fallback start date if not explicitly set
+  let startDateStr = userProfile?.programStartDate;
+  if (!startDateStr && currentDayNum > 0) {
+    const d = new Date(todayDate);
+    d.setDate(d.getDate() - (currentDayNum - 1));
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    startDateStr = `${year}-${month}-${day}`;
+  }
 
   const items: CalendarDayItem[] = [];
 
